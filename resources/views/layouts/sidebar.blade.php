@@ -14,6 +14,12 @@
         </a>
       </li>
       <li class="nav-item ">
+        <a class="nav-link" href="{{route('bus-schedule.index')}}">
+            <i class="material-icons">content_paste</i>
+            <p>Bus Schedules</p>
+          </a>
+        </li>
+      <li class="nav-item ">
       <a class="nav-link" href="{{route('operator.index')}}">
           <i class="material-icons">content_paste</i>
           <p>operators List</p>
@@ -26,13 +32,13 @@
         </a>
       </li>
       <li class="nav-item ">
-        {{-- <a class="nav-link" href="{{route('region.index')}}"> --}}
+        <a class="nav-link" href="{{route('region.index')}}">
           <i class="material-icons">bubble_chart</i>
           <p>Region List</p>
         </a>
       </li>
       <li class="nav-item ">
-        {{-- <a class="nav-link" href="{{route('sub-region.index')}}"> --}}
+        <a class="nav-link" href="{{route('subregion.index')}}">
           <i class="material-icons">location_ons</i>
           <p>Sub Region List</p>
         </a>

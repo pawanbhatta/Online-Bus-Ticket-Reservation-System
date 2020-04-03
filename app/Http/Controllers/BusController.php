@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Bus;
 use App\Operator;
+use Session;
 use DB;
 
 class BusController extends Controller
@@ -18,7 +19,6 @@ class BusController extends Controller
     public function index()
     {
         $operators = Operator::get();
-        // $buses = Bus::get();
         $buses = Bus::orderBy('created_at', 'asc')->paginate(5);
         // Mostly use 'compact' method to pass the variables, otherwise it doesnt work with 'with' method
         return view('admin.buses.bus-list', compact('operators', 'buses'));
@@ -88,7 +88,8 @@ class BusController extends Controller
         // dd($bus);
         
         $bus->save();
-        return redirect('/bus')->with('success', 'Bus Created Successfully');
+        Session::flash('msg', 'New Bus Created Successfully!');
+        return redirect('/bus');//->with('success', 'Bus Created Successfully');
 
     }
 
@@ -101,7 +102,11 @@ class BusController extends Controller
     public function show($id)
     {
         $bus = Bus::find($id);
-        return view('admin.buses.bus-view')->with('bus', $bus);
+        $operators = Operator::get();
+        $operator = $operators->where('operator_id', '15');
+        // return view('admin.buses.bus-view')->with('operator', $operator,'bus', $bus);
+        return view('admin.buses.bus-view', compact('operator', 'bus'));
+
     }
 
     /**
@@ -163,7 +168,8 @@ class BusController extends Controller
         }
         
         $bus->save();
-        return redirect('/bus')->with('success', 'Bus Info Updated Successfully');
+        Session::flash('msg', 'Bus Info Updated Successfully!');
+        return redirect('/bus');//->with('success', 'Bus Info Updated Successfully');
     }
 
     /**
@@ -180,6 +186,7 @@ class BusController extends Controller
             Storage::delete('public/bus_images/'.$bus->bus_image);
         }
         $bus->delete();
-        return redirect('/bus')->with('success', 'Bus Deleted Successfully');
+        Session::flash('msg', 'Bus Deleted Successfully!');
+        return redirect('/bus');//->with('success', 'Bus Deleted Successfully');
     }
 }

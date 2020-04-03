@@ -1,7 +1,7 @@
 {{-- we will copy this modal and make some changes for the bus modal --}}
 {{-- it's just a simple bootstrap modal okay  --}}
 <!-- Modal -->
-<div class="modal fade" id="exampleModalCenteraddbus" tabindex="-1" role="dialog" 
+<div class="modal fade" id="addOperator" tabindex="-1" role="dialog" 
     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">

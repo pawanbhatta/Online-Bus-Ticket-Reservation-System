@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Operator;
+use Session;
 
 class OperatorController extends Controller
 {
@@ -79,7 +80,8 @@ class OperatorController extends Controller
         // dd($operator);
 
         $operator->save();
-        return redirect('/operator')->with('success', 'Operator Created Successfully');
+        Session::flash('msg', 'New Operator Created Successfully!');
+        return redirect('/operator');//->with('success', 'Operator Created Successfully');
 
          // generating a custom flash message before inserting data.
         //  $id = $request::get('operator_id');
@@ -98,7 +100,8 @@ class OperatorController extends Controller
     {
         $operator = Operator::find($id);
         $operators = Operator::all();
-        return view('admin.operators.operator-view')->with('operator', $operator, 'operators', $operators);
+        // return view('admin.operators.operator-view')->with('operator', $operator, 'operators', $operators);
+        return view('admin.operators.operator-view', compact('operator', 'operators'));
     }
 
     /**
@@ -165,7 +168,8 @@ class OperatorController extends Controller
         }
 
         $operator->save();
-        return redirect('/operator')->with('flash_message_success', 'Operator Updated Successfully');   
+        Session::flash('msg', 'Operator Updated Successfully!');
+        return redirect('/operator');//->with('flash_message_success', 'Operator Updated Successfully');   
     }
 
     /**
@@ -182,6 +186,7 @@ class OperatorController extends Controller
             Storage::delete('public/operator_images/'.$operator->operator_logo);
         }
         $operator->delete();
-        return redirect('/operator')->with('success', 'Record Removed Successfully');
+        Session::flash('msg', 'Operator Deleted Successfully!');
+        return redirect('/operator');//->with('success', 'Record Removed Successfully');
     }
 }
