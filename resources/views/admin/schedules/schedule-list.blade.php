@@ -21,20 +21,21 @@
                 <div class="card-body">
                   <div class="table-responsive">
                   @if (count($schedules) > 0 ) 
-                    <table class="col-md-12">
+                    <table class="col-md-8">
                       <thead class="text-primary">
                       <th>ID</th>
-                    <th>Operator Id</th>
+                    {{-- <th>Operator Id</th>
                     <th>Bus Id</th>
                     <th>Region Id</th>
-                    <th>Sub Region Id</th>
-                    <th>Depart Date</th>
-                    <th>Return Date</th>
-                    <th>Depart Time</th>
-                    <th>Return Time</th>
+                    <th>Sub Region Id</th> --}}
                     <th>Pickup Address</th>
                     <th>Dropoff Address</th>
+                    <th>Depart Date</th>
+                    <th>Depart Time</th>
+                    <th>Return Date</th>
+                    <th>Return Time</th>
                     <th>Booked Date</th>
+                    <th>Price Amount</th>
                     <th>Status</th>
                     <th>Action</th>
                     </thead>
@@ -42,12 +43,12 @@
                     @foreach ( $schedules as $key => $schedule )
                       <tr>
                         <td>{{ ++$key }}</td>
-                        <td>
+                        {{-- <td>
                           <a data-toggle="modal" data-target="#exampleModalCenterviewOperator
                             {{$schedule->operator_id}}"data-toggle="tooltip">{{ $schedule->operator_id }}</a></td>
                         <td>{{ $schedule->bus_id }}</td>
                         <td>{{ $schedule->region_id }}</td>
-                        <td>{{ $schedule->sub_region_id }}</td>
+                        <td>{{ $schedule->sub_region_id }}</td> --}}
                         <td>{{ $schedule->pickup_address }}</td>
                         <td>{{ $schedule->dropoff_address }}</td>
                         <td>{{ $schedule->depart_date }}</td>
@@ -55,10 +56,11 @@
                         <td>{{ $schedule->return_date }}</td>
                         <td>{{ $schedule->return_time }}</td>
                         <td>{{ $schedule->created_at }}</td>
+                        <td>{{ $schedule->price }}</td>
                         <td>@if($schedule->status == 1)
-                          Available
+                          Booked
                         @else
-                          Not Available
+                          Pending...
                         @endif
                         </td>
                         <td>

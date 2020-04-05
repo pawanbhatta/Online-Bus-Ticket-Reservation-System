@@ -1,4 +1,5 @@
 @include('layouts.app')
+@include('admin.message')
 
 {{-- <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true"> --}}
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -21,21 +22,18 @@
             <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                {{-- <label for="operator_name">Operator Name</label> --}}
                 <input value="{{ $sub_region->sub_region_name }}" name="sub_region_name" id="sub_region_name" class="form-control" aria-describedby="emailHelp"
                     placeholder="Enter Sub Region Name" type="text">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                {{-- <label for="operator_email">Operator Email</label> --}}
                 <input value="{{$sub_region->sub_region_code}}" name="sub_region_code" id="sub_region_code" class="form-control" aria-describedby="emailHelp" 
                     placeholder="Enter Sub Region Code" type="text">
                 </div>
             </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                            <!-- <label for="exampleInputPassword1">Seat No</label> -->
                             <select name="region_id" class="form-control">
                                 <option value="">Select Region</option>
                                 @foreach ($regions as $region)
@@ -56,7 +54,6 @@
         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
         <button type="submit" class="btn btn-primary">Update Sub Region</button>
         {{Form::hidden('_method','PUT')}}
-        {{-- {{Form::submit('submit', ['class' => 'btn btn-primary'])}} --}}
         {!! Form::close() !!}
 
 

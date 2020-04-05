@@ -64,6 +64,7 @@ class OperatorController extends Controller
         }
 
         $operator = new Operator;
+        
         $operator->operator_name = $request->operator_name;
         $operator->operator_email = $request->operator_email;
         $operator->operator_address = $request->operator_address;
@@ -100,7 +101,6 @@ class OperatorController extends Controller
     {
         $operator = Operator::find($id);
         $operators = Operator::all();
-        // return view('admin.operators.operator-view')->with('operator', $operator, 'operators', $operators);
         return view('admin.operators.operator-view', compact('operator', 'operators'));
     }
 
@@ -113,8 +113,6 @@ class OperatorController extends Controller
     public function edit($id)
     {
         $operator = Operator::find($id);
-        // $operators = Operator::get();
-        // return view('admin.operators.edit-operator')->with('operator', $operator);
         return view('admin.operators.edit-operator', compact('operator'));
     }
 

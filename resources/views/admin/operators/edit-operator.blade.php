@@ -1,4 +1,5 @@
 @include('layouts.app')
+@include('admin.message')
 
 {{-- <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true"> --}}
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -44,11 +45,6 @@
                 <textarea value="{{$operator->operator_address}}" name="operator_address" id="operator_address" rows="2" cols="20" class="form-control" 
                 placeholder="Enter Operator Address" type="text"></textarea>
                 </div>
-                {{-- <div class="form-group">
-                    <!-- <label for="exampleInputPassword1">Seat No</label> -->
-                    <textarea name="operator_description" rows="2" cols="20" class="form-control" 
-                    placeholder="Enter Operator Description" type="text"></textarea>
-                </div> --}}
                 <div class="col-md-3">
                 <div class="form-group">
                     <input value="{{$operator->status}}" name="status"  aria-describedby="emailHelp" type="checkbox">
@@ -64,8 +60,8 @@
         </fieldset>
         </div>
         <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Update Operator</button>
+        <a href="{{ url('/operator') }}" type="button" class="btn btn-sm btn-primary">Go Back</a>
+        <button type="submit" class="btn btn-sm btn-success">Update Operator</button>
         {{Form::hidden('_method','PUT')}}
         {{-- {{Form::submit('submit', ['class' => 'btn btn-primary'])}} --}}
         {!! Form::close() !!}

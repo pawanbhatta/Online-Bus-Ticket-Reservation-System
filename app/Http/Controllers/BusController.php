@@ -20,7 +20,6 @@ class BusController extends Controller
     {
         $operators = Operator::get();
         $buses = Bus::orderBy('created_at', 'asc')->paginate(5);
-        // Mostly use 'compact' method to pass the variables, otherwise it doesnt work with 'with' method
         return view('admin.buses.bus-list', compact('operators', 'buses'));
     }
 
@@ -31,8 +30,8 @@ class BusController extends Controller
      */
     public function create()
     {
-        // $operators = Operator::get();
-        return view('admin.buses.add-bus');
+        $operators = Operator::all();
+        return view('admin.buses.add-bus', compact('operators', $operators));
     }
 
     /**
@@ -89,7 +88,7 @@ class BusController extends Controller
         
         $bus->save();
         Session::flash('msg', 'New Bus Created Successfully!');
-        return redirect('/bus');//->with('success', 'Bus Created Successfully');
+        return redirect('/bus');
 
     }
 
@@ -103,9 +102,7 @@ class BusController extends Controller
     {
         $bus = Bus::find($id);
         $operators = Operator::get();
-        $operator = $operators->where('operator_id', '15');
-        // return view('admin.buses.bus-view')->with('operator', $operator,'bus', $bus);
-        return view('admin.buses.bus-view', compact('operator', 'bus'));
+        return view('admin.buses.bus-view', compact( 'bus', 'operators'));
 
     }
 
@@ -118,7 +115,8 @@ class BusController extends Controller
     public function edit($id)
     {
         $bus = Bus::find($id);
-        return view('admin.buses.edit-bus')->with('bus', $bus);
+        $operators = Operator::get();
+        return view('admin.buses.edit-bus', compact('bus', 'operators'));
     }
 
     /**

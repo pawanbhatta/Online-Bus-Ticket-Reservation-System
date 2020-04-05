@@ -33,7 +33,7 @@
                     <tbody>
                     @foreach ( $regions as $key => $region )
                       <tr>
-                        <td>{{ $key }}</td>
+                        <td>{{ ++$key }}</td>
                         <td>
                           <a data-toggle="modal" data-target="#exampleModalCenterviewOperator
                             {{$region->region_id}}"data-toggle="tooltip">{{ $region->region_name }}</a></td>

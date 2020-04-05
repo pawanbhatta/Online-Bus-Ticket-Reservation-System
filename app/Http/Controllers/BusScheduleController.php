@@ -35,12 +35,13 @@ class BusScheduleController extends Controller
      */
     public function create()
     {
-        $schedules = BusSchedule::orderBy('created_at', 'asc')->paginate(5);
+        $schedules = BusSchedule::all();
         $operators = Operator::all();
         $buses = Bus::all();
         $regions = Region::all();
         $subregions = Sub_Region::all();
         return view('admin.schedules.edit-schedule', compact('schedules', 'operators', 'buses', 'regions', 'subregions'));
+        // return view('admin.schedules.edit-schedule', compact('schedules'));
     }
 
     /**
@@ -51,44 +52,66 @@ class BusScheduleController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, 
-        [
-            'bus_id'=>'required',
-            'operator_id'=>'required',
-            'region_id'=>'required',
-            'sub_region_id'=>'required',
-            'depart_date'=>'required',
-            'return_date'=>'required',
-            'depart_time'=>'required',
-            'return_time'=>'required',
-            'pickup_address'=>'required',
-            'dropoff_address'=>'required',
-            'status'=>'required'
-        ]);
+        if($request->isMethod('post')){
+            $data = $request->all();
 
-        $schedule = new BusSchedule;
+            if(empty($data['return_date'])){
+                $data['return_date'] = '';
+            }
+            $this->validate($request, 
+            [
+                'bus_id'=>'required',
+                'operator_id'=>'required',
+                'region_id'=>'required',
+                'sub_region_id'=>'required',
+                'depart_date'=>'required',
+                'return_date'=>'required',
+                'depart_time'=>'required',
+                'return_time'=>'required',
+                'pickup_address'=>'required',
+                'dropoff_address'=>'required',
+                'status'=>'required'
+            ]);
 
-        $schedule->bus_id = $request->bus_id;
-        $schedule->operator_id = $request->operator_id;
-        $schedule->region_id = $request->region_id;
-        $schedule->sub_region_id = $request->sub_region_id;
-        $schedule->depart_date = $request->depart_date;
-        $schedule->return_date = $request->return_date;
-        $schedule->depart_time = $request->depart_time;
-        $schedule->return_time = $request->return_time;
-        $schedule->pickup_address = $request->pickup_address;
-        $schedule->dropoff_address = $request->dropoff_address;
-        
-        if(isset($request->status)){
-            $schedule->status = 1;
-        }else{
-            $schedule->status = 0;
+            $schedule = new BusSchedule;
+
+            $schedule->bus_id = $data['bus_id'];
+            $schedule->operator_id = $data['operator_id'];
+            $schedule->region_id = $data['region_id'];
+            $schedule->sub_region_id = $data['sub_region_id'];
+            $schedule->depart_date = $data['depart_date'];
+            $schedule->return_date = $data['return_date'];
+            $schedule->depart_time = $data['depart_time'];
+            $schedule->return_time = $data['return_time'];
+            $schedule->price = $data['price'];
+            $schedule->pickup_address = $data['pickup_address'];
+            $schedule->dropoff_address = $data['dropoff_address'];
+            $schedule->created_at = date('Y-m-d H:i:s');
+            $schedule->updated_at = date('Y-m-d H:i:s');
+
+
+            // $schedule->bus_id = $request->bus_id;
+            // $schedule->operator_id = $request->operator_id;
+            // $schedule->region_id = $request->region_id;
+            // $schedule->sub_region_id = $request->sub_region_id;
+            // $schedule->depart_date = $request->depart_date;
+            // $schedule->return_date = $request->return_date;
+            // $schedule->depart_time = $request->depart_time;
+            // $schedule->return_time = $request->return_time;
+            // $schedule->pickup_address = $request->pickup_address;
+            // $schedule->dropoff_address = $request->dropoff_address;
+            
+            if(isset($data['status'])){
+                $schedule->status = 1;
+            }else{
+                $schedule->status = 0;
+            }
+
+            $schedule->save();
+            Session::flash('msg', 'New Schedule Created Successfully');
+
+            return redirect('/bus-schedule');
         }
-
-        $schedule->save();
-        Session::flash('msg', 'New Schedule Created Successfully');
-
-        return redirect('/bus-schedule');
     }
 
     /**
@@ -113,7 +136,11 @@ class BusScheduleController extends Controller
     {
         $schedule = BusSchedule::find($id);
         $schedules = BusSchedule::all();
-        return view('admin.schedules.edit-schedule', compact('schedule', 'schedules'));
+        $operators = Operator::all();
+        $buses = Bus::all();
+        $regions = Region::all();
+        $subregions = Sub_Region::all();
+        return view('admin.schedules.edit-schedule', compact('schedule', 'schedules', 'operators', 'buses', 'regions', 'subregions'));
     }
 
     /**
@@ -137,7 +164,7 @@ class BusScheduleController extends Controller
             'return_time'=>'required',
             'pickup_address'=>'required',
             'dropoff_address'=>'required',
-            'status'=>'required'
+            // 'status'=>'required'
         ]);
 
         $schedule = BusSchedule::find($id);
@@ -177,5 +204,19 @@ class BusScheduleController extends Controller
         $schedule->delete();
         Session::flash('msg', 'Schedule Deleted Successfully');
         return redirect('/bus-schedule');
+    }
+
+    public function showOperator(Request $request)
+    {
+        if($request->ajax()){
+            return response(Buses::where('operator_id', $request->operator_id)->get());
+        }
+    }
+
+    public function showRegion(Request $request)
+    {
+        if($request->ajax()){
+            return response(Region::where('region_id', $request->region_id)->get());
+        }
     }
 }

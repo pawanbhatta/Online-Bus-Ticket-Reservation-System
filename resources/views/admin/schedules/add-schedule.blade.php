@@ -19,8 +19,8 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                        <select name="operator_id" class="form-control">
-                                            <option value="">Select Operator</option>
+                                        <select name="operator_id" id="operator_id" class="form-control">
+                                            <option value="0" selected="true" disabled="true">Select Operator</option>
                                             @foreach ($operators as $operator)
                                             <option value="{{$operator->operator_id}}">{{$operator->operator_name}}</option>
                                             @endforeach
@@ -30,8 +30,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                         <!-- <label for="exampleInputPassword1">Seat No</label> -->
-                                        <select name="bus_id" class="form-control">
-                                            <option value="">Select Bus</option>
+                                        <select name="bus_id" id="bus_id" class="form-control">
+                                        <option value="0" selected="true" disabled="true">Select Bus</option>
                                             @foreach ($buses as $bus)
                                             <option value="{{$bus->bus_id}}">{{$bus->bus_name}}</option>
                                             @endforeach
@@ -43,8 +43,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                         <!-- <label for="exampleInputPassword1">Seat No</label> -->
-                                        <select name="region_id" class="form-control">
-                                            <option value="">Select Region</option>
+                                        <select name="region_id" id="region_id" class="form-control">
+                                            <option value="0" selected="true" disabled="true">Select Region</option>
                                             @foreach ($regions as $region)
                                             <option value="{{$region->region_id}}">{{$region->region_name}}</option>
                                             @endforeach
@@ -54,8 +54,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                             <!-- <label for="exampleInputPassword1">Seat No</label> -->
-                                            <select name="sub_region_id" class="form-control">
-                                                <option value="">Select Sub Region</option>
+                                            <select name="sub_region_id" id="sub_region_id" class="form-control">
+                                                <option value="0" selected="true" disabled="true">Select Sub Region</option>
                                                 @foreach ($subregions as $subregion)
                                                 <option value="{{$subregion->sub_region_id}}">{{$subregion->sub_region_name}}</option>
                                                 @endforeach
@@ -111,13 +111,21 @@
                                 </div>
                                 </div>
                             </div>
-                          <div class="col-md-3">
-                          <div class="form-group">
-                                <input name="status"  aria-describedby="emailHelp" type="checkbox">
-                                <label for="exampleInputEmail1">Book</label>
-                          </div>
-                          </div>
-              
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <!-- <label for="exampleInputPassword1">Seat No</label> -->
+                                        <input name="price" rows="2" cols="20" class="form-control" 
+                                        placeholder="Enter Price" type="number">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                          <input name="status"  aria-describedby="emailHelp" type="checkbox">
+                                          <label>Book</label>
+                                    </div>
+                                </div>
+                            </div>
                       </fieldset>
         </div>
         <div class="modal-footer">
@@ -129,4 +137,47 @@
     </div>
   </div>
   
-  
+  @section('scripts')
+  <script type="text/javascript">
+    $('#region_id').on('change', function(e){
+        var region_id = $(this).val();
+        var sub_region_id = $('#sub_region_id')
+            $(sub_region_id).empty();
+            $.get("{{ route('showRegion') }}", {region_id:region_id}, function(data){
+                $.each(data, function(i, l){
+                    console.log('hii');
+                    $(sub_region_id).append($('</option>',{
+                        value : l.sub_region_id,
+                        text : l.sub_region_name
+                    }))
+                })
+            })
+    });
+
+    $('#operator_id').on('change', function(e){
+        var operator_id = $(this).val();
+        var bus_id = $('#bus_id')
+            $(bus_id).empty();
+            $.get("{{ route('showRegion') }}", {operator_id:operator_id}, function(data){
+                $.each(data, function(i, l){
+                    console.log('helo');
+                    $(bus_id).append($('</option>',{
+                        value : l.bus_id,
+                        text : l.bus_name
+                    }))
+                })
+            })
+    });
+
+  </script>
+
+  <script type="text/javascript">
+    $(#'depart_date').datetimepicker({
+        format:'YY-MM-DD'
+    });
+    $('return_date').datetimepicker({
+        format:'YY-MM-DD'
+    });
+    $('.datepicker').datepicker()
+  </script>
+  @endsection
