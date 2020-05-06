@@ -6,51 +6,53 @@
           <div class="row">
             <div class="col-md-12">
             <span class="pull-center">
-            <a href="#" data-toggle="modal" data-target="#addRegion" 
+            <a href="#" data-toggle="modal" data-target="#addBus" 
             data-toggle="tooltip" type="button" class="btn btn-sm btn-primary">
-            <i class="glyphicon glyphicon-plus"></i> Add New Region</a>
+            <i class="glyphicon glyphicon-plus"></i> Add New Bus</a>
             </span>
             <br>
             <br>
               <div class="card">
                 <div class="card-header card-header-primary">
-                  <h4 class="card-title ">Regions List</h4>
+                  <h4 class="card-title ">Bus List</h4>
                   <h4 class="card-title pull-right">Today is: {{ date('d-m-Y', time()) }}</h4>
                   <p class="card-category"> Here is a subtitle for this table</p>
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">
-                  @if (count($regions) > 0 ) 
+                  @if (count($buses) > 0 ) 
                     <table class="col-md-10">
                       <thead class="text-primary">
                       <th>ID</th>
-                    <th>Region Name</th>
-                    <th>Region Code</th>
+                    <th>Bus Name</th>
+                    <th>Total Seats</th>
                     <th>Last Updated</th>
                     <th>Status</th>
                     <th>Action</th>
                     </thead>
                     <tbody>
-                    @foreach ( $regions as $key => $region )
+                    @foreach ( $buses as $key => $bus )
                       <tr>
                         <td>{{ ++$key }}</td>
                         <td>
+                        <img style="heigth:20px; width:20px; background-color:powderblue;" src="/storage/bus_images/{{$bus->bus_image}}">
                           <a data-toggle="modal" data-target="#exampleModalCenterviewOperator
-                            {{$region->region_id}}"data-toggle="tooltip">{{ $region->region_name }}</a></td>
-                        <td>{{ $region->region_code }}</td>
-                        <td>{{ $region->updated_at }}</td>
-                        <td>@if($region->status == 1)
+                            {{$bus->bus_id}}"data-toggle="tooltip">{{ $bus->bus_name }}</a></td>
+                        <td>{{ $bus->total_seats }}</td>
+                        <td>{{ $bus->updated_at }}</td>
+                        {{-- <td>{{ $bus->created_at }}</td> --}}
+                        <td>@if($bus->status == 1)
                           Available
                         @else
                           Not Available
                         @endif
                         </td>
                         <td>
-                          <a href="#" data-toggle="modal" data-target="#regionView{{$region->region_id}}" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary">
+                          <a href="#" data-toggle="modal" data-target="#busView{{$bus->bus_id}}" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary">
                           <i class="glyphicon glyphicon-plus"></i>View</a>
-            @include('admin.regions.region-view')
-                          <a href="/region/{{$region->region_id}}/edit" class="btn btn-sm btn-info">Edit</a>
-                          <form action="{{ url('/region', ['id' => $region->region_id]) }}" method="post">
+                  @include('admin.buses.bus-view')
+                          <a href="/bus/{{ $bus->bus_id }}/edit" class="btn btn-sm btn-info">Edit</a>
+                          <form action="{{ url('/bus', ['id' => $bus->bus_id]) }}" method="post">
                             <input class="btn btn-sm btn-danger" type="submit" value="Delete" />
                             <input type="hidden" name="_method" value="delete" />
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -63,11 +65,11 @@
               @endif 
                  </div>
                 </div>
-                {!! $regions->render() !!}
+                {!! $buses->render() !!}
               </div>
             </div>
             </div>
             </div>
             </div>
-            @include('admin.regions.add-region')
+            @include('admin.buses.add-bus')
 @endsection

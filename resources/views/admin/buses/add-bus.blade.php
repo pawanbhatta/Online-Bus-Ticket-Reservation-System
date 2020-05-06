@@ -15,54 +15,104 @@
                       <fieldset>
                       <div class="row">
                         <div class="col-md-6">
-                        <div class="form-group">
-                                <!-- <label for="exampleInputPassword1">Seat No</label> -->
-                                <select name="operator_id" class="form-control">
-                                    <option value="">Select Operator</option>
-                                    @foreach ($operators as $operator)
-                                    <option value="{{$operator->operator_id}}">{{$operator->operator_name}}</option>
-                                    @endforeach
-                                </select>
-                          </div>
-                        </div>
-                      <div class="col-md-6">
                           <div class="form-group">
                                 <!-- <label for="exampleInputEmail1">Bus Name</label> -->
                                 <input name="bus_name"  class="form-control" aria-describedby="emailHelp"
                                  placeholder="Enter Bus Name" type="text">
                           </div>
-                          </div>
-                          <div class="col-md-6">
+                        </div>
+                        <div class="col-md-6">
                           <div class="form-group">
                                 <!-- <label for="exampleInputEmail1">Bus Name</label> -->
-                                <input name="bus_code"  class="form-control" aria-describedby="emailHelp" 
-                                placeholder="Enter Bus Code" type="text">
+                                <input name="bus_num"  class="form-control" aria-describedby="emailHelp" 
+                                placeholder="Enter Bus Number" type="text">
                           </div>
-                          </div>
-                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
                           <div class="form-group">
-                                <!-- <label for="exampleInputEmail1">Bus Name</label> -->
-                                <input name="total_seats"  class="form-control" aria-describedby="emailHelp"
-                                 placeholder="Enter Total Seat" type="text">
+                            <input name="pickup_address"  class="form-control" aria-describedby="emailHelp"
+                              placeholder="Enter Pickup Address" type="text">
                           </div>
-                          
-                          {{-- <div class="form-group">
-                                <!-- <label for="exampleInputPassword1">Seat No</label> -->
-                                <textarea name="operator_description" rows="2" cols="20" class="form-control" 
-                                placeholder="Enter Operator Description" type="text"></textarea>
-                          </div> --}}
-                          <div class="col-md-3">
+                        </div>
+                        <div class="col-md-6">
                           <div class="form-group">
-                                <input name="status"  aria-describedby="emailHelp" type="checkbox">
-                                <label for="exampleInputEmail1">Available</label>
+                            <input name="dropoff_address"  class="form-control" aria-describedby="emailHelp" 
+                            placeholder="Enter Dropoff Address" type="text">
                           </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <input name="depart_date"  class="form-control" aria-describedby="emailHelp"
+                              placeholder="Enter Depart Date" type="date">
                           </div>
-                          <div class="row">
-                            <div class="col-md-12">
-                              <label class="control-label">Image</label>
-                              <input type="file" name="bus_image">
-                            </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <input name="depart_time"  class="form-control" aria-describedby="emailHelp" 
+                            placeholder="Enter Depart Time" type="time">
                           </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <input name="return_date"  class="form-control" aria-describedby="emailHelp"
+                              placeholder="Enter Return Date" type="date">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <input name="return_time"  class="form-control" aria-describedby="emailHelp" 
+                            placeholder="Enter Return Time" type="time">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <input name="seats_booked"  class="form-control" aria-describedby="emailHelp"
+                              placeholder="Enter Seats Booked" type="number">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <input name="seats_avail"  class="form-control" aria-describedby="emailHelp" 
+                            placeholder="Enter Seats Available" type="number">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <!-- <label for="exampleInputEmail1">Bus Name</label> -->
+                            <input name="phone"  class="form-control" aria-describedby="emailHelp"
+                             placeholder="Enter Phone Number" type="text">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <!-- <label for="exampleInputEmail1">Bus Name</label> -->
+                            <input name="total_seats"  class="form-control" aria-describedby="emailHelp"
+                             placeholder="Enter Total Seat" type="text">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <input name="status"  aria-describedby="emailHelp" type="checkbox">
+                            <label>Available</label>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="control-label">Image</label>
+                          <input type="file" name="bus_image">
+                        </div>
+                      </div>
                       </fieldset>
         </div>
         <div class="modal-footer">

@@ -16,7 +16,7 @@
                 <div class="card-body">                                             
                 <h5 class="card-title">Name : {{$bus->bus_name}}</h5>
                 <p class="card-text">Id : {{$bus->bus_id}}</p>
-                    {{-- <p class="card-text">Operator ID : {{$bus->operator_id}}</p> --}}
+                    <p class="card-text">Operator ID : {{$bus->operator_id}}</p>
                     {{-- <p class="card-text">Operator Name : {{$operator->operator_name}}</p> --}}
                     <p class="card-text">Bus Number : {{$bus->bus_code}}</p>
                     <p class="card-text">Status : @if($bus->status == 1)

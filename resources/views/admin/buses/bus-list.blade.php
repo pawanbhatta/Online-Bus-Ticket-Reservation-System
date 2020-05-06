@@ -25,10 +25,8 @@
                       <thead class="text-primary">
                       <th>ID</th>
                     <th>Bus Name</th>
-                    <th>Bus Code</th>
                     <th>Total Seats</th>
                     <th>Last Updated</th>
-                    {{-- <th>Created Date</th> --}}
                     <th>Status</th>
                     <th>Action</th>
                     </thead>

@@ -41,7 +41,7 @@ trait AuthenticatesUsers
             $this->fireLockoutEvent($request);
 
             return $this->sendLockoutResponse($request);
-        }
+        } 
 
         if ($this->attemptLogin($request)) {
             return $this->sendLoginResponse($request);

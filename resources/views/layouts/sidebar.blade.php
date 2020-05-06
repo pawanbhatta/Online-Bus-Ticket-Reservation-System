@@ -2,7 +2,7 @@
 <div class="sidebar-wrapper">
     <ul class="nav">
       <li class="nav-item active  ">
-        <a class="nav-link" href="./dashboard.html">
+        <a class="nav-link" href="/admin">
           <i class="material-icons">dashboard</i>
           <p>Dashboard</p>
         </a>
@@ -10,7 +10,7 @@
       <li class="nav-item ">
         <a class="nav-link" href="./user.html">
           <i class="material-icons">person</i>
-          <p>User Profile</p>
+          <p>{{ Auth::user()->name }}</p>
         </a>
       </li>
       <li class="nav-item ">
@@ -20,27 +20,15 @@
           </a>
         </li>
       <li class="nav-item ">
-      <a class="nav-link" href="{{route('operator.index')}}">
+      <a class="nav-link" href="#">
           <i class="material-icons">content_paste</i>
-          <p>operators List</p>
+          <p>Bookings</p>
         </a>
       </li>
       <li class="nav-item ">
         <a class="nav-link" href="{{route('bus.index')}}">
           <i class="material-icons">library_books</i>
-          <p>Buses List</p>
-        </a>
-      </li>
-      <li class="nav-item ">
-        <a class="nav-link" href="{{route('region.index')}}">
-          <i class="material-icons">bubble_chart</i>
-          <p>Region List</p>
-        </a>
-      </li>
-      <li class="nav-item ">
-        <a class="nav-link" href="{{route('subregion.index')}}">
-          <i class="material-icons">location_ons</i>
-          <p>Sub Region List</p>
+          <p>Buses</p>
         </a>
       </li>
       <li class="nav-item ">
@@ -49,11 +37,15 @@
           <p>Notifications</p>
         </a>
       </li>
-      <li class="nav-item ">
-        <a class="nav-link" href="./rtl.html">
-          <i class="material-icons">language</i>
-          <p>RTL Support</p>
+      <li class="nav-item dropdown">
+        <a class="nav-link" href="{{ route('admin.logout') }}"
+        onclick="event.preventDefault();
+                      document.getElementById('logout-form').submit();">
+         {{ __('Logout') }}
         </a>
-      </li>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+    </li>
     </ul>
   </div>

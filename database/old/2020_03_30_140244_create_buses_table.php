@@ -17,7 +17,6 @@ class CreateBusesTable extends Migration
             $table->bigIncrements('bus_id');
             $table->string('bus_name');
             $table->string('bus_num');
-            $table->string('phone');
             $table->string('pickup_address');
             $table->string('dropoff_addres');
             $table->string('seats_avail');  //json
@@ -26,7 +25,7 @@ class CreateBusesTable extends Migration
             $table->string('depart_date');
             $table->string('bus_image');
             $table->integer('total_seats');
-            // $table->integer('total_price');
+            $table->integer('total_price');
             $table->boolean('status')->default(0);
 
             $table->timestamps();

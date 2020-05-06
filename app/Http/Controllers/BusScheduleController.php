@@ -4,10 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\BusSchedule;
-use App\Operator;
 use App\Bus;
-use App\Region;
-use App\Sub_Region;
 use Session;
 
 class BusScheduleController extends Controller
@@ -17,15 +14,17 @@ class BusScheduleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
+    public function __construct()
+    {
+        $this->middleware('auth:admin');
+    }
+    
     public function index()
     {
         $schedules = BusSchedule::orderBy('created_at', 'asc')->paginate(5);
-        // $schedules = BusSchedule::all();
-        $operators = Operator::all();
         $buses = Bus::all();
-        $regions = Region::all();
-        $subregions = Sub_Region::all();
-        return view('admin.schedules.schedule-list', compact('schedules', 'operators', 'buses', 'regions', 'subregions'));
+        return view('admin.schedules.schedule-list', compact('schedules', 'buses'));
     }
 
     /**
@@ -36,11 +35,8 @@ class BusScheduleController extends Controller
     public function create()
     {
         $schedules = BusSchedule::all();
-        $operators = Operator::all();
         $buses = Bus::all();
-        $regions = Region::all();
-        $subregions = Sub_Region::all();
-        return view('admin.schedules.edit-schedule', compact('schedules', 'operators', 'buses', 'regions', 'subregions'));
+        return view('admin.schedules.edit-schedule', compact('schedules', 'buses'));
         // return view('admin.schedules.edit-schedule', compact('schedules'));
     }
 
@@ -61,9 +57,6 @@ class BusScheduleController extends Controller
             $this->validate($request, 
             [
                 'bus_id'=>'required',
-                'operator_id'=>'required',
-                'region_id'=>'required',
-                'sub_region_id'=>'required',
                 'depart_date'=>'required',
                 'return_date'=>'required',
                 'depart_time'=>'required',
@@ -76,9 +69,6 @@ class BusScheduleController extends Controller
             $schedule = new BusSchedule;
 
             $schedule->bus_id = $data['bus_id'];
-            $schedule->operator_id = $data['operator_id'];
-            $schedule->region_id = $data['region_id'];
-            $schedule->sub_region_id = $data['sub_region_id'];
             $schedule->depart_date = $data['depart_date'];
             $schedule->return_date = $data['return_date'];
             $schedule->depart_time = $data['depart_time'];
@@ -88,18 +78,6 @@ class BusScheduleController extends Controller
             $schedule->dropoff_address = $data['dropoff_address'];
             $schedule->created_at = date('Y-m-d H:i:s');
             $schedule->updated_at = date('Y-m-d H:i:s');
-
-
-            // $schedule->bus_id = $request->bus_id;
-            // $schedule->operator_id = $request->operator_id;
-            // $schedule->region_id = $request->region_id;
-            // $schedule->sub_region_id = $request->sub_region_id;
-            // $schedule->depart_date = $request->depart_date;
-            // $schedule->return_date = $request->return_date;
-            // $schedule->depart_time = $request->depart_time;
-            // $schedule->return_time = $request->return_time;
-            // $schedule->pickup_address = $request->pickup_address;
-            // $schedule->dropoff_address = $request->dropoff_address;
             
             if(isset($data['status'])){
                 $schedule->status = 1;
@@ -136,11 +114,8 @@ class BusScheduleController extends Controller
     {
         $schedule = BusSchedule::find($id);
         $schedules = BusSchedule::all();
-        $operators = Operator::all();
         $buses = Bus::all();
-        $regions = Region::all();
-        $subregions = Sub_Region::all();
-        return view('admin.schedules.edit-schedule', compact('schedule', 'schedules', 'operators', 'buses', 'regions', 'subregions'));
+        return view('admin.schedules.edit-schedule', compact('schedule', 'schedules', 'buses'));
     }
 
     /**
@@ -155,9 +130,6 @@ class BusScheduleController extends Controller
         $this->validate($request, 
         [
             'bus_id'=>'required',
-            'operator_id'=>'required',
-            'region_id'=>'required',
-            'sub_region_id'=>'required',
             'depart_date'=>'required',
             'return_date'=>'required',
             'depart_time'=>'required',
@@ -170,9 +142,6 @@ class BusScheduleController extends Controller
         $schedule = BusSchedule::find($id);
 
         $schedule->bus_id = $request->bus_id;
-        $schedule->operator_id = $request->operator_id;
-        $schedule->region_id = $request->region_id;
-        $schedule->sub_region_id = $request->sub_region_id;
         $schedule->depart_date = $request->depart_date;
         $schedule->return_date = $request->return_date;
         $schedule->depart_time = $request->depart_time;
@@ -206,17 +175,17 @@ class BusScheduleController extends Controller
         return redirect('/bus-schedule');
     }
 
-    public function showOperator(Request $request)
-    {
-        if($request->ajax()){
-            return response(Buses::where('operator_id', $request->operator_id)->get());
-        }
-    }
+    // public function showOperator(Request $request)
+    // {
+    //     if($request->ajax()){
+    //         return response(Buses::where('operator_id', $request->operator_id)->get());
+    //     }
+    // }
 
-    public function showRegion(Request $request)
-    {
-        if($request->ajax()){
-            return response(Region::where('region_id', $request->region_id)->get());
-        }
-    }
+    // public function showRegion(Request $request)
+    // {
+    //     if($request->ajax()){
+    //         return response(Region::where('region_id', $request->region_id)->get());
+    //     }
+    // }
 }

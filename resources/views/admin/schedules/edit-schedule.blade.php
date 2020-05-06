@@ -21,16 +21,6 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                        <select name="operator_id" class="form-control">
-                            <option value="">Select Operator</option>
-                            @foreach ($operators as $operator)
-                            <option value="{{$operator->operator_id}}">{{$operator->operator_name}}</option>
-                            @endforeach
-                        </select>
-                </div>
-                </div>
-            <div class="col-md-6">
-                <div class="form-group">
                         <!-- <label for="exampleInputPassword1">Seat No</label> -->
                         <select name="bus_id" class="form-control">
                             <option value="">Select Bus</option>
@@ -41,30 +31,6 @@
                 </div>
             </div>
         </div>
-          <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                        <!-- <label for="exampleInputPassword1">Seat No</label> -->
-                        <select name="region_id" class="form-control">
-                            <option value="">Select Region</option>
-                            @foreach ($regions as $region)
-                            <option value="{{$region->region_id}}">{{$region->region_name}}</option>
-                            @endforeach
-                        </select>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                            <!-- <label for="exampleInputPassword1">Seat No</label> -->
-                            <select name="sub_region_id" class="form-control">
-                                <option value="">Select Sub Region</option>
-                                @foreach ($subregions as $subregion)
-                                <option value="{{$subregion->sub_region_id}}">{{$subregion->sub_region_name}}</option>
-                                @endforeach
-                            </select>
-                      </div>
-                    </div>
-            </div>
             <div class="row">
                 <div class="col-md-6">
                 <div class="form-group">
@@ -124,7 +90,7 @@
     </div>
     <div class="modal-footer">
     <a href="{{ url('/bus-schedule') }}" type="button" class="btn btn-sm btn-primary">Go Back</a>
-    <button type="submit" class="btn btn-primary">Update Operator</button>
+    <button type="submit" class="btn btn-primary">Update Schedule</button>
     {{Form::hidden('_method','PUT')}}
     {{-- {{Form::submit('submit', ['class' => 'btn btn-primary'])}} --}}
     {!! Form::close() !!}

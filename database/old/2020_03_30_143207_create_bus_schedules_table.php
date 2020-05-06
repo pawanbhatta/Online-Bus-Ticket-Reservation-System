@@ -16,6 +16,9 @@ class CreateBusSchedulesTable extends Migration
         Schema::create('bus_schedules', function (Blueprint $table) {
             $table->bigIncrements('schedule_id');
             $table->integer('bus_id');
+            $table->integer('operator_id');
+            $table->integer('region_id');
+            $table->integer('sub_region_id');
             $table->date('depart_date');
             $table->date('return_date');
             $table->time('depart_time');

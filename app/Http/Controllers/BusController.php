@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Bus;
-use App\Operator;
 use Session;
 use DB;
 
@@ -16,11 +15,16 @@ class BusController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth:admin');
+    }
+
     public function index()
     {
-        $operators = Operator::get();
         $buses = Bus::orderBy('created_at', 'asc')->paginate(5);
-        return view('admin.buses.bus-list', compact('operators', 'buses'));
+        return view('admin.buses.bus-list', compact('buses'));
     }
 
     /**
@@ -30,8 +34,7 @@ class BusController extends Controller
      */
     public function create()
     {
-        $operators = Operator::all();
-        return view('admin.buses.add-bus', compact('operators', $operators));
+        return view('admin.buses.add-bus');
     }
 
     /**
@@ -46,9 +49,8 @@ class BusController extends Controller
         [
             'bus_name'=>'required',
             'total_seats'=>'required',
-            'bus_code'=>'required',
+            'bus_num'=>'required',
             'bus_image' => 'image|nullable|max:2048',
-            'operator_id'=>'required'
         ]);
         
 
@@ -69,8 +71,6 @@ class BusController extends Controller
         }
 
         $bus = new Bus;
-
-        $bus->operator_id = $request->operator_id;
 
         $bus->bus_name = $request->bus_name;
         $bus->total_seats = $request->total_seats;
@@ -101,8 +101,7 @@ class BusController extends Controller
     public function show($id)
     {
         $bus = Bus::find($id);
-        $operators = Operator::get();
-        return view('admin.buses.bus-view', compact( 'bus', 'operators'));
+        return view('admin.buses.bus-view', compact( 'bus'));
 
     }
 
@@ -115,8 +114,7 @@ class BusController extends Controller
     public function edit($id)
     {
         $bus = Bus::find($id);
-        $operators = Operator::get();
-        return view('admin.buses.edit-bus', compact('bus', 'operators'));
+        return view('admin.buses.edit-bus', compact('bus'));
     }
 
     /**
@@ -132,7 +130,7 @@ class BusController extends Controller
         [
             'bus_name'=>'required',
             'total_seats'=>'required',
-            'bus_code'=>'required',
+            'bus_num'=>'required',
         ]);
         
 
@@ -152,7 +150,7 @@ class BusController extends Controller
         
         $bus->bus_name = $request->bus_name;
         $bus->total_seats = $request->total_seats;
-        $bus->bus_code = $request->bus_code;
+        $bus->bus_num = $request->bus_num;
         $bus->status = $request->status;
 
         if(isset($request->status)){

@@ -43,7 +43,7 @@
                             placeholder="Enter Total Number of seats" type="text">
                     </div>
                 </div>
-                {{-- <div class="col-md-6">
+                <div class="col-md-6">
                     <div class="form-group">
                             <select name="operator_id" class="form-control">
                                 <option value="">Select Operator</option>
@@ -54,15 +54,13 @@
                     </div>
                 </div>
             </div>
-            <div class="row"> --}}
+            <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
                         <input value="{{$bus->status}}" name="status"  aria-describedby="emailHelp" type="checkbox">
                         <label for="exampleInputEmail1">Available</label>
                     </div>
                 </div>
-            </div>
-            <div class="row">
                 <div class="form-group">
                     <div class="col-md-6">
                             <label class="control-label">Image</label>

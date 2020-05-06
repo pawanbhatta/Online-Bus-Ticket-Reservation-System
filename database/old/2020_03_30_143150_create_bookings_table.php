@@ -18,8 +18,9 @@ class CreateBookingsTable extends Migration
             $table->integer('customer_id');
             $table->integer('bus_id');
             $table->string('seats_booked'); //json
-            $table->integer('total_price');
+            // $table->integer('seat_amount');
             $table->boolean('status')->default(0);
+            // $table->date('booking_date');
             $table->timestamps();
         });
     }
