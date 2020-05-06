@@ -1,15 +1,14 @@
 @extends('layouts.app')
 
-{{-- @include('auth.appnav') --}}
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+                <div class="card-header">{{ __('Admin Registeration') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ url('/register') }}">
+                    <form method="POST" action="{{ route('admin.register.submit') }}">
                         @csrf
 
                         <div class="form-group row">
@@ -26,21 +25,13 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="address" class="col-md-4 col-form-label text-md-right">{{ __('Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="address" type="text" class="form-control" name="address" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
+                        {{-- <div class="form-group row">
                             <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone') }}</label>
 
                             <div class="col-md-6">
                                 <input id="phone" type="text" class="form-control" name="phone" required>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>

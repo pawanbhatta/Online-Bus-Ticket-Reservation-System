@@ -48,21 +48,20 @@
                 <section class="col-md-8">
                   <div class="card">
                     <div class="card-header">Search Your Way</div>
-    
                     <div class="card-body">
                         <form action="{{ url('/home/enquiry')}}" method="get" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="source">Source</label>
-                                <input name="source" id="source" type="text" class="form-control" placeholder="Enter Source Address">
+                                <input name="source" id="source" type="text" class="form-control" placeholder="Enter Source Address" required>
                             </div>
                             <div class="form-group">
                                 <label for="destination">Destination</label>
-                                <input name="destination" id="destination" type="text" class="form-control" placeholder="Enter destination Address">
+                                <input name="destination" id="destination" type="text" class="form-control" placeholder="Enter destination Address" required>
                             </div>
                             <div class="form-group">
                                 <label for="travel_date">Travel Date</label>
-                                <input name="travel_date" id="travel_date" type="date" class="form-control" placeholder="Enter Travel Date">
+                                <input name="travel_date" id="travel_date" type="date" class="form-control" placeholder="Enter Travel Date" required>
                             </div>
                             <input type="submit" class="btn btn-info" value="Search">
     
@@ -79,7 +78,7 @@
           <div class="row">
               <section class="col-md-7">
                   @include('customer.schedules')
-                  {{-- {{ $schedules->render() }} --}}
+                  {{-- {{ $schedules->links() }} --}}
               </section>
               <section class="col-md-5">
                   <div class="card mb-3">

@@ -32,9 +32,9 @@
         </a>
       </li>
       <li class="nav-item ">
-        <a class="nav-link" href="./notifications.html">
-          <i class="material-icons">notifications</i>
-          <p>Notifications</p>
+        <a class="nav-link" href="{{ route('admin.register') }}">
+          <i class="material-icons">person</i>
+          <p>Register New Admin</p>
         </a>
       </li>
       <li class="nav-item dropdown">
@@ -43,7 +43,7 @@
                       document.getElementById('logout-form').submit();">
          {{ __('Logout') }}
         </a>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        <form id="logout-form" action="{{ route('admin.logout') }}" method="get" style="display: none;">
             @csrf
         </form>
     </li>

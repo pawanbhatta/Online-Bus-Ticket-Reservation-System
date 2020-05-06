@@ -30,15 +30,12 @@ Route::prefix('admin')->group(function(){
     Route::get('/', 'AdminController@index')->name('admin.dashboard');
     Route::get('/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
 
-        
-    // Operator Route 
-    Route::Resource('operator', 'OperatorController');
+    Route::get('/register', 'Auth\AdminRegisterController@showRegistrationForm')->name('admin.register');
+    Route::post('/register', 'Auth\AdminRegisterController@register')->name('admin.register.submit');
+
+    
     // Bus Route
     Route::Resource('bus', 'BusController');
-    // Route Region
-    Route::Resource('region', 'RegionController');
-    // Route Sub_Region
-    Route::Resource('subregion', 'Sub_RegionController');
     // Route BusSchedule
     Route::Resource('bus-schedule', 'BusScheduleController');
     Route::get('/showRegion', ['as'=>'showRegion', 'uses'=>'BusScheduleController@showRegion']);

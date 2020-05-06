@@ -23,7 +23,7 @@ trait RegistersUsers
 
     /**
      * Handle a registration request for the application.
-     *
+     * 
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -51,7 +51,7 @@ trait RegistersUsers
      */
     protected function guard()
     {
-        return Auth::guard();
+        return Auth::guard('web');
     }
 
     /**

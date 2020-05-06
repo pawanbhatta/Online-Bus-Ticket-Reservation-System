@@ -26,7 +26,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('customer.index', ['layout' => 'index']);
+        $schedules = BusSchedule::all();
+        return view('customer.index', ['layout' => 'index', 'schedules' => $schedules]);
     }
 
     public function enquiry(Request $request)
