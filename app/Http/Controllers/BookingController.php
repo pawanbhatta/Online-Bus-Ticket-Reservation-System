@@ -23,12 +23,25 @@ class BookingController extends Controller
     {
         $this->middleware('auth');
     }
-
+    
     public function index()
     {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'; 
+        $pid = ''; 
+      
+        for ($i = 0; $i < 10; $i++) { 
+            $index = rand(0, strlen($characters) - 1); 
+            $pid .= $characters[$index];
+        } 
+
+        $epay_url = "https://uat.esewa.com.np/epay/main";
+        $successUrl = "http://localhost:8000/home/booking/success";
+        $failedUrl = "http://localhost:8000/home/booking/failed";
+        $merchantCode = "epay_payment";
+
         $bookings = Booking::all();
         $buses = Bus::all();
-        return view('customer.index', ['layout' => 'checklist', 'bookings' => $bookings, 'buses' => $buses]);
+        return view('customer.index', ['layout' => 'checklist', 'bookings' => $bookings, 'buses' => $buses, 'pid' => $pid]);
     }
 
     /**
@@ -65,11 +78,11 @@ class BookingController extends Controller
 
         $schedule = DB::table('bus_schedules')->where('schedule_id', '=', $schedule_id)->first();
         $bus = DB::table('buses')->where('bus_id', '=', $schedule->bus_id)->first();
+        
+        // if(in_array(ucfirst("$request->destination"), (array)$schedule->stations)){
 
-        // if(in_array(($request->source), (array)$schedule->stations)){
-
-        //     if(in_array(($request->destination), (array)$schedule->stations)){
-            // if(count(array_intersect(array(ucfirst($request->source), ucfirst($request->destination)), (array)$schedule->stations)) == 2){
+        //     if(in_array(ucfirst("$request->source"), (array)$schedule->stations)){
+        //     // if(count(array_intersect(array(ucfirst($request->source), ucfirst($request->destination)), (array)$schedule->stations)) == 2){
                 $booking->customer_id = Auth::id();
                 $booking->bus_id    =   $schedule->bus_id;
                 $booking->schedule_id    =   $schedule->schedule_id;
@@ -84,7 +97,7 @@ class BookingController extends Controller
                     $booking->status = 0;
                 }
 
-                (array)$bus->seats = array_merge((array)$bus->seats, $request->seats_booked);
+                // (array)$bus->seats = array_merge((array)$bus->seats, $request->seats_booked);
                 // $bus->save();
         
                 $booking->save();
@@ -95,12 +108,13 @@ class BookingController extends Controller
                 Session::flash('success', 'Your Seat Booked Successsfully');
 
                 return view('customer.index', ['layout' => 'checklist', 'buses' => $buses, 'bookings' => $bookings]);
-            // }else{
-            //     Session::flash('success', 'Please Check Your Destination Address');
-            // return redirect()->back();
-            // }
+        //     }else{
+        //         Session::flash('success', 'Please Check Your Source Address');
+        //     return redirect()->back();
+        //     }
+        // }
         // else{
-        //     Session::flash('error', 'Please Check Your Source Address');
+        //     Session::flash('error', 'Please Check Your Destination Address');
         //     return redirect()->back();
         // }
     }
@@ -142,7 +156,7 @@ class BookingController extends Controller
         $bookings = Booking::all();
         $buses = Bus::all();
         $booking = Booking::find($id);
-        
+
         $this->validate($request, [
             'seats_booked'  =>  'required',
             'source'        =>  'required',
@@ -198,5 +212,39 @@ class BookingController extends Controller
         $booking->delete();
         Session::flash('success', 'Your Reservation Removed Successfully');
         return redirect(route('booking.index'));
+    }
+
+    public function success($booking_id)
+    {
+        $oid = $_GET['oid'];
+        $amt = $_GET['amt'];
+        $refId = $_GET['refId'];
+        $booking = DB::table('bookings')->where('booking_id', '=', $booking_id);
+
+        $url = "https://uat.esewa.com.np/epay/main";
+        $data =[
+            'amt'=> $booking->total_price,
+            'pdc'=> 0,
+            'psc'=> 0,
+            'txAmt'=> 0,
+            'tAmt'=> $booking->total_price,
+            'pid'=> $booking->ticked_id,
+            'scd'=> 'epay_payment',
+            'su'=>'http://localhost:8000/home/booking/'.$booking->product_id.'?q=su',
+            'fu'=>'http://localhost:8000/home/booking/'.$booking->product_id.'?q=fu'
+        ];
+
+            $curl = curl_init($url);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            $response = curl_exec($curl);
+            curl_close($curl);
+        return view('customer.success');
+    }
+
+    public function failure($booking_id)
+    {
+        return view('customer.failure');
     }
 }

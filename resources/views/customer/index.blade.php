@@ -168,13 +168,13 @@
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label for="source">From</label>
-                                  <input type="text" name="source" value="{{ $schedule->pickup_address }}" class="form-control" placeholder="Enter Source Address" required>
+                                  <input type="text" name="source" class="form-control" placeholder="Enter Source Address" required>
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label for="source">To</label>
-                                  <input type="text" name="destination" value="{{ $schedule->dropoff_address }}" class="form-control" placeholder="Enter Destination Address" required>
+                                  <input type="text" name="destination"  class="form-control" placeholder="Enter Destination Address" required>
                                 </div>
                               </div>
                             </div>

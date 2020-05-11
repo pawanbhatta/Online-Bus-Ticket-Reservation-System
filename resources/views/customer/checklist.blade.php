@@ -54,9 +54,28 @@
                     @endif
                 </td>
                 <td>
-                    <a href="#" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-usd"></i></a>
-                    <a href="/home/booking/{{ $booking->booking_id }}/edit" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-edit"></i></a>
-                    <a href="{{ url('/home/booking/'.$booking->booking_id.'/delete') }}" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-trash"></i></a>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <form action="{{ $epay_url }}" method="POST">
+                                <input value="{{ $booking->total_price }}" name="tAmt" type="hidden">
+                                <input value="{{ $booking->total_price }}" name="amt" type="hidden">
+                                <input value="0" name="txAmt" type="hidden">
+                                <input value="0" name="psc" type="hidden">
+                                <input value="0" name="pdc" type="hidden">
+                                <input value="{{ $merchantCode }}" name="scd" type="hidden">
+                                <input value="{{ $pid }}" name="pid" type="hidden">
+                                <input value="{{ $successUrl.'/$booking->booking_id?q=su' }}" type="hidden" name="su">
+                                <input value="{{ $failedUrl.'/$booking->booking_id?q=fu' }}" type="hidden" name="fu">
+                                <button type="submit" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-usd"></i></button>
+                            </form>
+                        </div>
+                        <div class="col-md-2">
+                           <a href="/home/booking/{{ $booking->booking_id }}/edit" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-edit"></i></a>
+                        </div>
+                        <div class="col-md-2">
+                            <a href="{{ url('/home/booking/'.$booking->booking_id.'/delete') }}" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-trash"></i></a>
+                        </div>
+                    </div>
                   </td>
             </tr>
             @endforeach

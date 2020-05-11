@@ -25,13 +25,19 @@ Route::prefix('home')->group(function(){
     Route::get('/', 'HomeController@index')->name('home');
     Route::post('/enquiry', 'HomeController@enquiry')->name('enquiry');
     Route::get('/enquiry', 'HomeController@showall')->name('schedules.all');
-    // Route::Resource('booking', 'BookingController');
+
+
     Route::get('/booking', 'BookingController@index')->name('booking.index');
     Route::get('/booking/{schedule_id}', 'BookingController@create')->name('ticket.booking');
     Route::post('/booking/{schedule_id}', 'BookingController@store')->name('ticket.booking.submit');
     Route::get('/booking/{booking_id}/edit', 'BookingController@edit')->name('booking.edit');
     Route::post('/booking/{booking_id}', 'BookingController@update')->name('booking.update');
     Route::get('/booking/{booking_id}/delete', 'BookingController@destroy')->name('booking.delete');
+
+
+    Route::get('booking/success/{booking_id}', 'BookingController@success')->name('success');
+    Route::get('booking/failed/{booking_id}', 'BookingController@failure')->name('failure');
+
 });
 
 Route::prefix('admin')->group(function(){
