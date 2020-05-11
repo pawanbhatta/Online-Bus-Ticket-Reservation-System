@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-{{-- @include('auth.appnav') --}}
+@include('auth.appnav')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\BusSchedule;
 use App\Bus;
+use App\Station;
 use Session;
 
 class BusScheduleController extends Controller
@@ -24,7 +25,8 @@ class BusScheduleController extends Controller
     {
         $schedules = BusSchedule::orderBy('created_at', 'asc')->paginate(5);
         $buses = Bus::all();
-        return view('admin.schedules.schedule-list', compact('schedules', 'buses'));
+        $stations = Station::all();
+        return view('admin.schedules.schedule-list', compact('schedules', 'buses', 'stations'));
     }
 
     /**
@@ -36,8 +38,8 @@ class BusScheduleController extends Controller
     {
         $schedules = BusSchedule::all();
         $buses = Bus::all();
-        return view('admin.schedules.edit-schedule', compact('schedules', 'buses'));
-        // return view('admin.schedules.edit-schedule', compact('schedules'));
+        $stations = Station::all();
+        return view('admin.schedules.edit-schedule', compact('schedules', 'buses', 'stations'));
     }
 
     /**
@@ -63,7 +65,9 @@ class BusScheduleController extends Controller
                 'return_time'=>'required',
                 'pickup_address'=>'required',
                 'dropoff_address'=>'required',
-                'status'=>'required'
+                'stations'    =>     'required',
+                'price'    =>     'required',
+                // 'status'=>'required'
             ]);
 
             $schedule = new BusSchedule;
@@ -73,9 +77,10 @@ class BusScheduleController extends Controller
             $schedule->return_date = $data['return_date'];
             $schedule->depart_time = $data['depart_time'];
             $schedule->return_time = $data['return_time'];
+            $schedule->pickup_address = ucfirst($data['pickup_address']);
+            $schedule->dropoff_address = ucfirst($data['dropoff_address']);
+            $schedule->stations = $data['stations'];
             $schedule->price = $data['price'];
-            $schedule->pickup_address = $data['pickup_address'];
-            $schedule->dropoff_address = $data['dropoff_address'];
             $schedule->created_at = date('Y-m-d H:i:s');
             $schedule->updated_at = date('Y-m-d H:i:s');
             
@@ -88,7 +93,7 @@ class BusScheduleController extends Controller
             $schedule->save();
             Session::flash('msg', 'New Schedule Created Successfully');
 
-            return redirect('/bus-schedule');
+            return redirect('/admin/bus-schedule');
         }
     }
 
@@ -101,6 +106,7 @@ class BusScheduleController extends Controller
     public function show($id)
     {
         $schedule = BusSchedule::find($id);
+        $checkpoints = json_decode($schedule->stations);
         return view('admin.schedules.show-schedule', compact('schedule'));
     }
 
@@ -115,7 +121,8 @@ class BusScheduleController extends Controller
         $schedule = BusSchedule::find($id);
         $schedules = BusSchedule::all();
         $buses = Bus::all();
-        return view('admin.schedules.edit-schedule', compact('schedule', 'schedules', 'buses'));
+        $stations = Station::all();
+        return view('admin.schedules.edit-schedule', compact('schedule', 'schedules', 'buses', 'stations'));
     }
 
     /**
@@ -136,6 +143,8 @@ class BusScheduleController extends Controller
             'return_time'=>'required',
             'pickup_address'=>'required',
             'dropoff_address'=>'required',
+            'stations'    =>     'required',
+            'price'    =>     'required',
             // 'status'=>'required'
         ]);
 
@@ -146,8 +155,10 @@ class BusScheduleController extends Controller
         $schedule->return_date = $request->return_date;
         $schedule->depart_time = $request->depart_time;
         $schedule->return_time = $request->return_time;
-        $schedule->pickup_address = $request->pickup_address;
-        $schedule->dropoff_address = $request->dropoff_address;
+        $schedule->pickup_address = ucfirst($request->pickup_address);
+        $schedule->dropoff_address = ucfirst($request->dropoff_address);
+        $schedule->stations = $request->stations;
+        $schedule->price = $request->price;
         
         if(isset($request->status)){
             $schedule->status = 1;
@@ -158,7 +169,7 @@ class BusScheduleController extends Controller
         $schedule->save();
         Session::flash('msg', 'Schedule Updated Successfully');
 
-        return redirect('/bus-schedule');
+        return redirect('/admin/bus-schedule');
     }
 
     /**
@@ -172,20 +183,6 @@ class BusScheduleController extends Controller
         $schedule = BusSchedule::find($id);
         $schedule->delete();
         Session::flash('msg', 'Schedule Deleted Successfully');
-        return redirect('/bus-schedule');
+        return redirect('/admin/bus-schedule');
     }
-
-    // public function showOperator(Request $request)
-    // {
-    //     if($request->ajax()){
-    //         return response(Buses::where('operator_id', $request->operator_id)->get());
-    //     }
-    // }
-
-    // public function showRegion(Request $request)
-    // {
-    //     if($request->ajax()){
-    //         return response(Region::where('region_id', $request->region_id)->get());
-    //     }
-    // }
 }

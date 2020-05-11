@@ -22,8 +22,9 @@ class CreateBusSchedulesTable extends Migration
             $table->time('return_time');
             $table->string('pickup_address');
             $table->string('dropoff_address');
+            $table->json('stations');       //json
+            $table->string('price');
             $table->boolean('status')->default(0);
-
             $table->timestamps();
         });
     }

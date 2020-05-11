@@ -17,95 +17,55 @@
                         <div class="col-md-6">
                           <div class="form-group">
                                 <!-- <label for="exampleInputEmail1">Bus Name</label> -->
-                                <input name="bus_name"  class="form-control" aria-describedby="emailHelp"
+                                <input name="bus_name" class="form-control" aria-describedby="emailHelp"
                                  placeholder="Enter Bus Name" type="text">
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
                                 <!-- <label for="exampleInputEmail1">Bus Name</label> -->
-                                <input name="bus_num"  class="form-control" aria-describedby="emailHelp" 
+                                <input name="bus_num" class="form-control" aria-describedby="emailHelp" 
                                 placeholder="Enter Bus Number" type="text">
                           </div>
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                           <div class="form-group">
-                            <input name="pickup_address"  class="form-control" aria-describedby="emailHelp"
-                              placeholder="Enter Pickup Address" type="text">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <input name="dropoff_address"  class="form-control" aria-describedby="emailHelp" 
-                            placeholder="Enter Dropoff Address" type="text">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <input name="depart_date"  class="form-control" aria-describedby="emailHelp"
-                              placeholder="Enter Depart Date" type="date">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <input name="depart_time"  class="form-control" aria-describedby="emailHelp" 
-                            placeholder="Enter Depart Time" type="time">
+                            <label for="seats_booked">Seats : </label><br>
+                              <div class="row">
+                                <?php for ($i=1; $i <= 12; $i++) { ?>
+                                  <div class="col-md-3">
+                                    <input type="checkbox" id="seats" name="seats[]" value="{{ $i }}">{{ $i }} <br>
+                                  </div>
+                                <?php  } ?>
+                                <div class="col-md-3">
+                                  <input type="checkbox" id="select-all">
+                                  <label for="select-all">Select All</label>
+                                </div>
+                              </div>
                           </div>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group">
-                            <input name="return_date"  class="form-control" aria-describedby="emailHelp"
-                              placeholder="Enter Return Date" type="date">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <input name="return_time"  class="form-control" aria-describedby="emailHelp" 
-                            placeholder="Enter Return Time" type="time">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <input name="seats_booked"  class="form-control" aria-describedby="emailHelp"
-                              placeholder="Enter Seats Booked" type="number">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <input name="seats_avail"  class="form-control" aria-describedby="emailHelp" 
-                            placeholder="Enter Seats Available" type="number">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <!-- <label for="exampleInputEmail1">Bus Name</label> -->
-                            <input name="phone"  class="form-control" aria-describedby="emailHelp"
+                            <input name="phone" class="form-control" aria-describedby="emailHelp"
                              placeholder="Enter Phone Number" type="text">
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
-                            <!-- <label for="exampleInputEmail1">Bus Name</label> -->
                             <input name="total_seats"  class="form-control" aria-describedby="emailHelp"
-                             placeholder="Enter Total Seat" type="text">
+                             placeholder="Enter Total Seat" type="number">
                           </div>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group">
-                            <input name="status"  aria-describedby="emailHelp" type="checkbox">
-                            <label>Available</label>
+                            <input name="status" id="status" aria-describedby="emailHelp" type="checkbox">
+                            <label for="status">Available</label>
                           </div>
                         </div>
                         <div class="col-md-6">
@@ -124,4 +84,11 @@
     </div>
   </div>
   
-  
+  <script>
+    document.getElementById('select-all').onclick = function() {
+    var checkboxes = document.querySelectorAll('input[id="seats"]');
+    for (var checkbox of checkboxes) {
+      checkbox.checked = this.checked;
+    }
+  }
+ </script>

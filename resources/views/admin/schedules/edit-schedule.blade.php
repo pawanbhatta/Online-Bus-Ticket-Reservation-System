@@ -19,6 +19,22 @@
     {{ csrf_field() }}
     <fieldset>
         <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="customer_id">Stations</label>
+                    <div class="row">
+                        <?php
+                        // for ($i=1; $i<=count($stations) ; $i++) { ?>
+                        @foreach ($stations as $station)
+                            <div class="col-md-4">
+                                <input type="checkbox"  name="stations[]" value="{{ $station->name }}" <?php if(in_array("$station->name", (array)$schedule->stations)){echo "checked";  } ?>>{{ $station->name }}
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                         <!-- <label for="exampleInputPassword1">Seat No</label> -->
@@ -28,6 +44,12 @@
                             <option value="{{$bus->bus_id}}">{{$bus->bus_name}}</option>
                             @endforeach
                         </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="price">Price </label>
+                    <input type="text" name="price" id="price" value="{{ $schedule->price }}">
                 </div>
             </div>
         </div>
@@ -67,15 +89,15 @@
                 <div class="col-md-6">
                 <div class="form-group">
                     <!-- <label for="exampleInputEmail1">Bus Name</label> -->
-                    <textarea name="pickup_address" value="{{ $schedule->pickup_address }}" class="form-control" aria-describedby="emailHelp"
-                    placeholder="Enter Pickup Address" type="text"></textarea>
+                    <input name="pickup_address" value="{{ $schedule->pickup_address }}" class="form-control" aria-describedby="emailHelp"
+                    placeholder="Enter Pickup Address" type="text">
                 </div>
                 </div>
                 <div class="col-md-6">
                 <div class="form-group">
                     <!-- <label for="exampleInputPassword1">Seat No</label> -->
-                    <textarea name="dropoff_address" value="{{ $schedule->dropoff_address }}" rows="2" cols="20" class="form-control" 
-                    placeholder="Enter Dropoff Address" type="text"></textarea>
+                    <input name="dropoff_address" value="{{ $schedule->dropoff_address }}" class="form-control" 
+                    placeholder="Enter Dropoff Address" type="text">
                 </div>
                 </div>
             </div>
@@ -89,7 +111,7 @@
       </fieldset>
     </div>
     <div class="modal-footer">
-    <a href="{{ url('/bus-schedule') }}" type="button" class="btn btn-sm btn-primary">Go Back</a>
+    <a href="{{ url('/admin/bus-schedule') }}" type="button" class="btn btn-sm btn-primary">Go Back</a>
     <button type="submit" class="btn btn-primary">Update Schedule</button>
     {{Form::hidden('_method','PUT')}}
     {{-- {{Form::submit('submit', ['class' => 'btn btn-primary'])}} --}}

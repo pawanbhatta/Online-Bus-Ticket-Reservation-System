@@ -49,7 +49,10 @@ class BusController extends Controller
         [
             'bus_name'=>'required',
             'total_seats'=>'required',
-            'bus_num'=>'required',
+            'phone'     =>  'required',
+            'seats'   =>  'nullable',
+            // 'seats_booked'  =>  'nullable',
+            'bus_num'       =>  'required',
             'bus_image' => 'image|nullable|max:2048',
         ]);
         
@@ -73,8 +76,11 @@ class BusController extends Controller
         $bus = new Bus;
 
         $bus->bus_name = $request->bus_name;
+        $bus->bus_num = $request->bus_num;
+        $bus->phone = $request->phone;
+        $bus->seats = $request->seats;
+        // $bus->seats_booked = $request->seats_booked;
         $bus->total_seats = $request->total_seats;
-        $bus->bus_code = $request->bus_code;
         $bus->bus_image = $fileNameToStore;
         // $bus->status = $request->status;
 
@@ -88,7 +94,7 @@ class BusController extends Controller
         
         $bus->save();
         Session::flash('msg', 'New Bus Created Successfully!');
-        return redirect('/bus');
+        return redirect('/admin/bus');
 
     }
 
@@ -100,9 +106,8 @@ class BusController extends Controller
      */
     public function show($id)
     {
-        $bus = Bus::find($id);
-        return view('admin.buses.bus-view', compact( 'bus'));
-
+        // $bus = Bus::find($id);
+        // return view('admin.buses.bus-view', compact( 'bus'));
     }
 
     /**
@@ -126,11 +131,17 @@ class BusController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $bus = Bus::find($id);
+
         $this->validate($request, 
         [
-            'bus_name'=>'required',
-            'total_seats'=>'required',
-            'bus_num'=>'required',
+            'bus_name'      =>    'required',
+            'total_seats'   =>    'required',
+            'phone'         =>    'required',
+            // 'seats_avail'   =>  'nullable',
+            'seats'  =>  'nullable',
+            'bus_num'       =>  'required',
+            'bus_image'     => 'image|nullable|max:2048',
         ]);
         
 
@@ -146,12 +157,16 @@ class BusController extends Controller
             $fileNameToStore = $filename.'_'.time().'.'.$extension;
             // Upload Image
             $path = $request->file('bus_image')->storeAs('public/bus_images', $fileNameToStore);
+
+            $bus->bus_image = $fileNameToStore;
         }
-        
+
         $bus->bus_name = $request->bus_name;
-        $bus->total_seats = $request->total_seats;
         $bus->bus_num = $request->bus_num;
-        $bus->status = $request->status;
+        $bus->phone = $request->phone;
+        $bus->total_seats = $request->total_seats;
+        $bus->seats = $request->seats;
+        // $bus->seats_booked = $request->seats_booked;
 
         if(isset($request->status)){
             $bus->status = 1;
@@ -159,13 +174,9 @@ class BusController extends Controller
             $bus->status = 0;
         }
         
-        if($request->hashFile('bus_image')){
-            $bus->bus_image = $fileNameToStore;
-        }
-        
         $bus->save();
         Session::flash('msg', 'Bus Info Updated Successfully!');
-        return redirect('/bus');//->with('success', 'Bus Info Updated Successfully');
+        return redirect(route('bus.index'));//->with('success', 'Bus Info Updated Successfully');
     }
 
     /**
@@ -183,6 +194,6 @@ class BusController extends Controller
         }
         $bus->delete();
         Session::flash('msg', 'Bus Deleted Successfully!');
-        return redirect('/bus');//->with('success', 'Bus Deleted Successfully');
+        return redirect('/admin/bus');//->with('success', 'Bus Deleted Successfully');
     }
 }

@@ -18,15 +18,10 @@ class CreateBusesTable extends Migration
             $table->string('bus_name');
             $table->string('bus_num');
             $table->string('phone');
-            $table->string('pickup_address');
-            $table->string('dropoff_addres');
-            $table->string('seats_avail');  //json
-            $table->string('seats_booked'); //json
-            $table->string('depart_time');
-            $table->string('depart_date');
+            $table->json('seats')->nullable();  //json
+            // $table->json('seats_booked')->nullable()->change(); //json
             $table->string('bus_image');
-            $table->integer('total_seats');
-            // $table->integer('total_price');
+            $table->integer('total_seats'); 
             $table->boolean('status')->default(0);
 
             $table->timestamps();

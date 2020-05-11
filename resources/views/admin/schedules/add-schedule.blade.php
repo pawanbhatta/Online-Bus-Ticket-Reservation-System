@@ -17,90 +17,89 @@
                     {{ csrf_field() }}
                     <fieldset>
                         <div class="row">
-                            {{-- <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
-                                        <select name="operator_id" id="operator_id" class="form-control">
-                                            <option value="0" selected="true" disabled="true">Select Operator</option>
-                                            @foreach ($operators as $operator)
-                                            <option value="{{$operator->operator_id}}">{{$operator->operator_name}}</option>
-                                            @endforeach
-                                        </select>
-                                </div>
-                                </div> --}}
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                        <!-- <label for="exampleInputPassword1">Seat No</label> -->
-                                        <select name="bus_id" id="bus_id" class="form-control">
-                                        <option value="0" selected="true" disabled="true">Select Bus</option>
-                                            @foreach ($buses as $bus)
-                                            <option value="{{$bus->bus_id}}">{{$bus->bus_name}}</option>
-                                            @endforeach
-                                        </select>
+                                    <label for="customer_id">Stations</label>
+                                    <div class="row">
+                                    @foreach ($stations as $station)
+                                        <div class="col-md-4">
+                                            <input type="checkbox" name="stations[]" value="{{ $station->name }}">{{ $station->name }} <br>
+                                        </div>
+                                    @endforeach
+                                    </div>
                                 </div>
                             </div>
-                        {{-- </div> --}}
-                            {{-- <div class="row"> --}}
-                                <div class="col-md-6">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <select name="bus_id" id="bus_id" class="form-control">
+                                        <option value="0" selected="true" disabled="true">Select Bus</option>
+                                        @foreach ($buses as $bus)
+                                            <option value="{{$bus->bus_id}}">{{$bus->bus_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <!-- <label for="exampleInputPassword1">Seat No</label> -->
+                                    <input name="price" rows="2" cols="20" class="form-control" 
+                                    placeholder="Enter Price" type="number">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                      <input name="status"  aria-describedby="emailHelp" type="checkbox">
+                                      <label>Active</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="depart_date">Depart Date</label>
                                     <input name="depart_date" id="depart_date"  class="form-control" aria-describedby="emailHelp"
                                     placeholder="Enter Depart Date" type="date">
                                 </div>
-                                </div>
-                                </div>
-                            <div class="row">
-                                <div class="col-md-6">
+                            </div>
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="depart_time">Depart Time</label>
                                     <input name="depart_time" id="depart_time" rows="2" cols="20" class="form-control" 
                                     placeholder="Enter Depart Time" type="time">
                                 </div>
-                                </div>
-                                <div class="col-md-6">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="return_date">Return Date</label>
                                     <input name="return_date" id="return_date"  class="form-control" aria-describedby="emailHelp"
                                     placeholder="Enter Return Date" type="date">
                                 </div>
-                                </div>
                             </div>
-                            <div class="row">
                                 <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="return_time">Return Time</label>
-                                    <input name="return_time" id="return_time" rows="2" cols="20" class="form-control" 
-                                    placeholder="Enter Return Time" type="time">
-                                </div>
-                                </div>
-                                <div class="col-md-6">
-                                <div class="form-group">
-                                    <!-- <label for="exampleInputEmail1">Bus Name</label> -->
-                                    <textarea name="pickup_address"  class="form-control" aria-describedby="emailHelp"
-                                    placeholder="Enter Pickup Address" type="text"></textarea>
-                                </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                <div class="form-group">
-                                    <!-- <label for="exampleInputPassword1">Seat No</label> -->
-                                    <textarea name="dropoff_address" rows="2" cols="20" class="form-control" 
-                                    placeholder="Enter Dropoff Address" type="text"></textarea>
-                                </div>
-                                </div>
-                                {{-- <div class="col-md-6">
                                     <div class="form-group">
-                                        <!-- <label for="exampleInputPassword1">Seat No</label> -->
-                                        <input name="price" rows="2" cols="20" class="form-control" 
-                                        placeholder="Enter Price" type="number">
+                                        <label for="return_time">Return Time</label>
+                                        <input name="return_time" id="return_time" rows="2" cols="20" class="form-control" 
+                                        placeholder="Enter Return Time" type="time">
                                     </div>
                                 </div>
                             </div>
-                            <div class="row"> --}}
+                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                          <input name="status"  aria-describedby="emailHelp" type="checkbox">
-                                          <label>Book</label>
+                                        <!-- <label for="exampleInputEmail1">Bus Name</label> -->
+                                        <textarea name="pickup_address"  class="form-control" aria-describedby="emailHelp"
+                                        placeholder="Enter Pickup Address" type="text"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <!-- <label for="exampleInputPassword1">Seat No</label> -->
+                                        <textarea name="dropoff_address" rows="2" cols="20" class="form-control" 
+                                        placeholder="Enter Dropoff Address" type="text"></textarea>
                                     </div>
                                 </div>
                             </div>

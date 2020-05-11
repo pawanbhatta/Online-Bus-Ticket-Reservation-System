@@ -15,9 +15,12 @@ class CreateBookingsTable extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->bigIncrements('booking_id');
-            $table->integer('customer_id');
-            $table->integer('bus_id');
-            $table->string('seats_booked'); //json
+            $table->bigInteger('customer_id');
+            $table->bigInteger('bus_id');
+            $table->bigInteger('schedule_id');
+            $table->json('seats_booked'); //json
+            $table->string('source');
+            $table->string('destination');
             $table->integer('total_price');
             $table->boolean('status')->default(0);
             $table->timestamps();

@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Bus;
 use App\BusSchedule;
+use App\Booking;
+use App\Station;
 use DB;
+use Auth;
 
 class HomeController extends Controller
 {
@@ -26,28 +29,31 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $schedules = BusSchedule::all();
-        return view('customer.index', ['layout' => 'index', 'schedules' => $schedules]);
+        return view('customer.index', ['layout' => 'index']);
     }
 
     public function enquiry(Request $request)
     {
-        $source = $request->source;
-        $dest = $request->destination;
+        $source = ucfirst($request->source);
+        $dest = ucfirst($request->destination);
         $date = $request->travel_date;
 
-        // $buses = DB::table('buses')
-        //    ->where('pickup_address', '=', $source)
-        //    ->where(function ($query) {
-        //        $query->where('dropoff_address', '=', $dest)
-        //              ->orWhere('depart_date', '=', $date);
-        //    })
-        //    ->get();
-        // $buses = DB::table('buses')->where('pickup_address', '=', $source)->get();
-        
-        // $bus = DB::table('buses')->where('bus_id', '=', '');
-        $schedules = BusSchedule::all();
+        $buses = Bus::all();
 
-        return view('customer.index', ['schedules' => $schedules, 'layout' => 'schedules', 'source' => $source, 'dest' => $dest, 'date' => $date]);
+        $schedules = DB::table('bus_schedules')
+            ->whereJsonContains('stations', $source)
+            ->Where('depart_date', '=', $date)
+            // ->Where('pickup_address', 'like', '%'.$source.'%')
+            ->whereJsonContains('stations', $dest)
+            ->paginate(10);
+
+        return view('customer.index', ['schedules' => $schedules, 'layout' => 'schedules', 'buses' => $buses, 'source' => $source, 'dest' => $dest, 'date' => $date]);
+    }
+
+    public function showall(Request $request)
+    {
+        $schedules = DB::table('bus_schedules')->paginate(10);
+        $buses = Bus::get();
+        return view('customer.index', ['schedules' => $schedules, 'layout' => 'allSchedules', 'buses' => $buses]);
     }
 }

@@ -16,17 +16,22 @@
                 <div class="card-body">                                             
                 <h5 class="card-title">Name : {{$bus->bus_name}}</h5>
                 <p class="card-text">Id : {{$bus->bus_id}}</p>
-                    {{-- <p class="card-text">Operator ID : {{$bus->operator_id}}</p> --}}
-                    {{-- <p class="card-text">Operator Name : {{$operator->operator_name}}</p> --}}
-                    <p class="card-text">Bus Number : {{$bus->bus_code}}</p>
-                    <p class="card-text">Status : @if($bus->status == 1)
-                      Available
-                    @else
-                      Not Available
-                    @endif</p>
-                    <hr>
-                    <p class="card-text"><small class="text-muted">Added on : {{$bus->created_at}}</small></p>
-                    <p class="card-text"><small class="text-muted">Updated on : {{$bus->updated_at}}</small></p>
+                <p class="card-text">Bus Number : {{$bus->bus_num}}</p>
+                <p class="card-text">Contact Number : {{$bus->phone}}</p>
+                <p class="card-text">Seats :
+                <?php 
+                  for ($i=1; $i<=12 ; $i++) { ?>
+                  <input disabled="disabled" type="checkbox" name="seats[]" value="{{ $i }}" <?php if(in_array("$i", (array)$bus->seats)){echo "checked";}?>>{{ $i }}
+                <?php } ?>
+                </p>
+                <p class="card-text">Status : @if($bus->status == 1)
+                Available
+              @else
+                Not Available
+              @endif</p>
+              <hr>
+              <p class="card-text"><small class="text-muted">Added on : {{$bus->created_at}}</small></p>
+              <p class="card-text"><small class="text-muted">Updated on : {{$bus->updated_at}}</small></p>
                 </div>
             </div>
         </div>

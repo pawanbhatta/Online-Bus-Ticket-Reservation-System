@@ -42,7 +42,7 @@
    <script src="{{asset('back-end/assets/js/core/jquery.min.js')}}"></script>
    <script src="{{asset('back-end/assets/js/core/popper.min.js')}}"></script>
    <script src="{{asset('back-end/assets/js/core/bootstrap-material-design.min.js')}}"></script>
-   
+
  </body>
  
  </html>

@@ -6,53 +6,54 @@
           <div class="row">
             <div class="col-md-12">
             <span class="pull-center">
-            <a href="#" data-toggle="modal" data-target="#addBus" 
+            <a href="#" data-toggle="modal" data-target="#addStation" 
             data-toggle="tooltip" type="button" class="btn btn-sm btn-primary">
-            <i class="glyphicon glyphicon-plus"></i> Add New Bus</a>
+            <i class="glyphicon glyphicon-plus"></i> Add New Station</a>
             </span>
             <br>
             <br>
               <div class="card">
                 <div class="card-header card-header-primary">
-                  <h4 class="card-title ">Bus List</h4>
+                  <h4 class="card-title ">Station List</h4>
                   <h4 class="card-title pull-right">Today is: {{ date('d-m-Y', time()) }}</h4>
-                  <p class="card-category"> Here is a subtitle for this table</p>
+                  <p class="card-category"> These are all the stations for the routes.</p>
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">
-                  @if (count($buses) > 0 ) 
-                    <table class="col-md-10">
+                  @if (count($stations) > 0 ) 
+                    <table class="col-md-12">
                       <thead class="text-primary">
                       <th>ID</th>
-                    <th>Bus Name</th>
-                    <th>Total Seats</th>
+                    <th>Station Name</th>
                     <th>Last Updated</th>
                     <th>Status</th>
                     <th>Action</th>
                     </thead>
                     <tbody>
-                    @foreach ( $buses as $key => $bus )
+                    @foreach ( $stations as $key => $station )
                       <tr>
                         <td>{{ ++$key }}</td>
                         <td>
-                        <img style="heigth:20px; width:20px; background-color:powderblue;" src="/storage/bus_images/{{$bus->bus_image}}">
                           <a data-toggle="modal" data-target="#exampleModalCenterviewOperator
-                            {{$bus->bus_id}}"data-toggle="tooltip">{{ $bus->bus_name }}</a></td>
-                        <td>{{ $bus->total_seats }}</td>
-                        <td>{{ $bus->updated_at }}</td>
-                        {{-- <td>{{ $bus->created_at }}</td> --}}
-                        <td>@if($bus->status == 1)
+                            {{$station->id}}"data-toggle="tooltip">{{ $station->name }}</a></td>
+                        <td>{{ $station->updated_at }}</td>
+                        <td>@if($station->status == 1)
                           Available
                         @else
                           Not Available
                         @endif
                         </td>
                         <td>
-                          <a href="#" data-toggle="modal" data-target="#busView{{$bus->bus_id}}" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary">
+                          <a href="#" data-toggle="modal" data-target="#stationView{{$station->id}}" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary">
                           <i class="glyphicon glyphicon-plus"></i>View</a>
-                  @include('admin.buses.bus-view')
-                          <a href="/bus/{{ $bus->bus_id }}/edit" class="btn btn-sm btn-info">Edit</a>
-                          <form action="{{ url('/bus', ['id' => $bus->bus_id]) }}" method="post">
+                  @include('admin.stations.station-view')
+                          {{-- <a href="/admin/station/{{ $station->id }}/edit" class="btn btn-sm btn-info">Edit</a> --}}
+                            <a href="#" data-toggle="modal" data-target="#editStation{{ $station->id }}" 
+                              data-toggle="tooltip" type="button" class="btn btn-sm btn-primary">
+                              <i class="glyphicon glyphicon-eye"></i> Edit
+                            </a>
+                            @include('admin.stations.edit-station')
+                          <form action="{{ url('/admin/station', ['id' => $station->id]) }}" method="post">
                             <input class="btn btn-sm btn-danger" type="submit" value="Delete" />
                             <input type="hidden" name="_method" value="delete" />
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -65,11 +66,11 @@
               @endif 
                  </div>
                 </div>
-                {!! $buses->render() !!}
+                {!! $stations->render() !!}
               </div>
             </div>
             </div>
             </div>
             </div>
-            @include('admin.buses.add-bus')
+            @include('admin.stations.add-station')
 @endsection

@@ -19,10 +19,20 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/home/enquiry', 'HomeController@enquiry')->name('enquiry');
-
 Route::get('users/logout', 'Auth\LoginController@userLogout')->name('user.logout');
+
+Route::prefix('home')->group(function(){
+    Route::get('/', 'HomeController@index')->name('home');
+    Route::post('/enquiry', 'HomeController@enquiry')->name('enquiry');
+    Route::get('/enquiry', 'HomeController@showall')->name('schedules.all');
+    // Route::Resource('booking', 'BookingController');
+    Route::get('/booking', 'BookingController@index')->name('booking.index');
+    Route::get('/booking/{schedule_id}', 'BookingController@create')->name('ticket.booking');
+    Route::post('/booking/{schedule_id}', 'BookingController@store')->name('ticket.booking.submit');
+    Route::get('/booking/{booking_id}/edit', 'BookingController@edit')->name('booking.edit');
+    Route::post('/booking/{booking_id}', 'BookingController@update')->name('booking.update');
+    Route::get('/booking/{booking_id}/delete', 'BookingController@destroy')->name('booking.delete');
+});
 
 Route::prefix('admin')->group(function(){
     Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
@@ -33,15 +43,15 @@ Route::prefix('admin')->group(function(){
     Route::get('/register', 'Auth\AdminRegisterController@showRegistrationForm')->name('admin.register');
     Route::post('/register', 'Auth\AdminRegisterController@register')->name('admin.register.submit');
 
-    
+    // Station Route
+    Route::Resource('station', 'StationController');
     // Bus Route
     Route::Resource('bus', 'BusController');
     // Route BusSchedule
     Route::Resource('bus-schedule', 'BusScheduleController');
-    Route::get('/showRegion', ['as'=>'showRegion', 'uses'=>'BusScheduleController@showRegion']);
-    Route::get('/showOperator', ['as'=>'showOperator', 'uses'=>'BusScheduleController@showOperator']);
+    // Route::get('/showRegion', ['as'=>'showRegion', 'uses'=>'BusScheduleController@showRegion']);
+    // Route::get('/showOperator', ['as'=>'showOperator', 'uses'=>'BusScheduleController@showOperator']);
 
-    
     // Password REset RoutEs  
     Route::post('/password/email', 'Auth\AdminForgotPasswordController@sendResetLinkEmail')->name('admin.password.email');
     Route::get('/password/reset', 'Auth\AdminForgotPasswordController@showLinkRequestForm')->name('admin.password.request');
