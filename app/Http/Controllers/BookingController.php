@@ -41,7 +41,7 @@ class BookingController extends Controller
 
         $bookings = Booking::all();
         $buses = Bus::all();
-        return view('customer.index', ['layout' => 'checklist', 'bookings' => $bookings, 'buses' => $buses, 'pid' => $pid]);
+        return view('customer.index', ['layout' => 'checklist', 'bookings' => $bookings, 'buses' => $buses, 'epay_url' => $epay_url, 'pid' => $pid, 'successUrl' => $successUrl, 'failedUrl' => $failedUrl, 'merchantCode' => $merchantCode]);
     }
 
     /**
@@ -221,7 +221,7 @@ class BookingController extends Controller
         $refId = $_GET['refId'];
         $booking = DB::table('bookings')->where('booking_id', '=', $booking_id);
 
-        $url = "https://uat.esewa.com.np/epay/main";
+        $url = "https://uat.esewa.com.np/epay/transrec";
         $data =[
             'amt'=> $booking->total_price,
             'pdc'=> 0,
@@ -230,17 +230,22 @@ class BookingController extends Controller
             'tAmt'=> $booking->total_price,
             'pid'=> $booking->ticked_id,
             'scd'=> 'epay_payment',
-            'su'=>'http://localhost:8000/home/booking/'.$booking->product_id.'?q=su',
-            'fu'=>'http://localhost:8000/home/booking/'.$booking->product_id.'?q=fu'
-        ];
+            'su'=>'http://localhost:8000/home/booking/'.$booking->ticket_id.'?q=su',
+            'fu'=>'http://localhost:8000/home/booking/'.$booking->ticket_id.'?q=fu'
+        ];  
 
             $curl = curl_init($url);
             curl_setopt($curl, CURLOPT_POST, true);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             $response = curl_exec($curl);
+            // echo $response;
             curl_close($curl);
-        return view('customer.success');
+            if(strpos( $response, "Success" !== false)){
+                return view('customer.success');
+            }else{
+                return view('customer.failure');
+            }
     }
 
     public function failure($booking_id)
