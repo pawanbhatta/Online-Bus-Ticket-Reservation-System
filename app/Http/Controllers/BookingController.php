@@ -26,22 +26,9 @@ class BookingController extends Controller
     
     public function index()
     {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'; 
-        $pid = ''; 
-      
-        for ($i = 0; $i < 10; $i++) { 
-            $index = rand(0, strlen($characters) - 1); 
-            $pid .= $characters[$index];
-        } 
-
-        $epay_url = "https://uat.esewa.com.np/epay/main";
-        $successUrl = "http://localhost:8000/home/booking/success";
-        $failedUrl = "http://localhost:8000/home/booking/failed";
-        $merchantCode = "epay_payment";
-
         $bookings = Booking::all();
         $buses = Bus::all();
-        return view('customer.index', ['layout' => 'checklist', 'bookings' => $bookings, 'buses' => $buses, 'epay_url' => $epay_url, 'pid' => $pid, 'successUrl' => $successUrl, 'failedUrl' => $failedUrl, 'merchantCode' => $merchantCode]);
+        return view('customer.index', ['layout' => 'checklist', 'bookings' => $bookings, 'buses' => $buses]);
     }
 
     /**
@@ -78,15 +65,17 @@ class BookingController extends Controller
 
         $schedule = DB::table('bus_schedules')->where('schedule_id', '=', $schedule_id)->first();
         $bus = DB::table('buses')->where('bus_id', '=', $schedule->bus_id)->first();
-        
+
+        $pid = $this->getPid();
         // if(in_array(ucfirst("$request->destination"), (array)$schedule->stations)){
 
         //     if(in_array(ucfirst("$request->source"), (array)$schedule->stations)){
         //     // if(count(array_intersect(array(ucfirst($request->source), ucfirst($request->destination)), (array)$schedule->stations)) == 2){
-                $booking->customer_id = Auth::id();
+                $booking->customer_id = Auth::user()->id;
                 $booking->bus_id    =   $schedule->bus_id;
+                $booking->pid   = $pid;
                 $booking->schedule_id    =   $schedule->schedule_id;
-                $booking->total_price = (int)$request->price * count($request->seats_booked);
+                $booking->total_price = (int)$schedule->price * count($request->seats_booked);
                 $booking->seats_booked = $request->seats_booked;
                 $booking->source = ucfirst($request->source);
                 $booking->destination = ucfirst($request->destination);
@@ -96,18 +85,26 @@ class BookingController extends Controller
                 }else{
                     $booking->status = 0;
                 }
-
-                // (array)$bus->seats = array_merge((array)$bus->seats, $request->seats_booked);
-                // $bus->save();
-        
+                
+                $booked = json_decode($bus->seats, true);
+                
+                // foreach ($request->seats_booked as $book) {
+                $booked[] = $request->seats_booked;
+                // }
+                
+                DB::table('buses')->where('bus_id', $schedule->bus_id)->update([
+                    'seats' => $booked
+                    ]);
+                    
                 $booking->save();
+                // dd($bus->seats);
 
                 $bookings = Booking::all();
                 $buses = Bus::all();
 
                 Session::flash('success', 'Your Seat Booked Successsfully');
 
-                return view('customer.index', ['layout' => 'checklist', 'buses' => $buses, 'bookings' => $bookings]);
+                return view('customer.index', ['layout' => 'checklist', 'buses' => $buses, 'bus'    =>$bus, 'bookings' => $bookings]);
         //     }else{
         //         Session::flash('success', 'Please Check Your Source Address');
         //     return redirect()->back();
@@ -140,8 +137,9 @@ class BookingController extends Controller
     public function edit($id)
     {
         $booking = Booking::find($id);
+        $bus = DB::table('buses')->where('bus_id', '=', $booking->bus_id)->first();
         $schedule = DB::table('bus_schedules')->where('schedule_id', '=', $booking->schedule_id)->first();
-        return view('customer.index', ['layout' => 'editBooking', 'booking' => $booking, 'schedule' => $schedule]);
+        return view('customer.index', ['layout' => 'editBooking', 'booking' => $booking, 'schedule' => $schedule, 'bus' => $bus]);
     }
 
     /**
@@ -166,12 +164,15 @@ class BookingController extends Controller
 
         $schedule = DB::table('bus_schedules')->where('schedule_id', '=', $booking->schedule_id)->first();
         $bus = DB::table('buses')->where('bus_id', '=', $booking->bus_id)->first();
+
+        $pid = $this->getPid();
         
         // if(in_array(ucfirst($request->source), ucfirst($request->destination), array($bus->stations))){
-            $booking->customer_id = Auth::id();
+            $booking->customer_id = Auth::user()->id;
             $booking->bus_id    =   $schedule->bus_id;
+            $booking->pid   = $pid;
             $booking->schedule_id    =   $schedule->schedule_id;
-            $booking->total_price = (int)$request->price * count($request->seats_booked);
+            $booking->total_price = $schedule->price * count($request->seats_booked);
             $booking->seats_booked = $request->seats_booked;
             $booking->source = $request->source;
             $booking->destination = $request->destination;
@@ -181,16 +182,21 @@ class BookingController extends Controller
             }else{
                 $booking->status = 0;
             }
-    
+
+            DB::table('buses')->where('bus_id', $booking->bus_id)->update([
+                'seats' => array_merge((array)$bus->seats, $booking->seats_booked)
+                ]);
+            
             $booking->save();
 
             Session::flash('success', 'Your Ticket Updated Successsfully');
 
-            return view('customer.index', ['layout' => 'checklist', 'buses' => $buses, 'bookings' => $bookings]);
+            // dd($booking);
+            // return view('customer.index', ['layout' => 'checklist', 'buses' => $buses, 'bookings' => $bookings]);
 
         // }else{
             // Session::flash('error', 'Please Check Your Source or Destination Address');
-            // return redirect()->back();
+            return redirect(route('booking.index'));
         // }
     }
 
@@ -209,6 +215,9 @@ class BookingController extends Controller
         //         $seats_removed = array_pop($bus->seats);
         //     }
         // }
+        DB::table('buses')->where('bus_id', $booking->bus_id)->update([
+            'seats' => NULL
+            ]);
         $booking->delete();
         Session::flash('success', 'Your Reservation Removed Successfully');
         return redirect(route('booking.index'));
@@ -221,7 +230,7 @@ class BookingController extends Controller
         $refId = $_GET['refId'];
         $booking = DB::table('bookings')->where('booking_id', '=', $booking_id);
 
-        $url = "https://uat.esewa.com.np/epay/transrec";
+        $url = "https://uat.esewa.com.np/epay/main";
         $data =[
             'amt'=> $booking->total_price,
             'pdc'=> 0,
@@ -251,5 +260,18 @@ class BookingController extends Controller
     public function failure($booking_id)
     {
         return view('customer.failure');
+    }
+
+    public function getPid()
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'; 
+        $pid = ''; 
+       
+        for ($i = 0; $i < 10; $i++) { 
+            $index = rand(0, strlen($characters) - 1); 
+            $pid .= $characters[$index];
+        }
+
+        return $pid;
     }
 }

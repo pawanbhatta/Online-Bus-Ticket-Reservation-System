@@ -17,6 +17,7 @@ class CreateBookingsTable extends Migration
             $table->bigIncrements('booking_id');
             $table->bigInteger('customer_id');
             $table->bigInteger('bus_id');
+            $table->string('pid');
             $table->bigInteger('schedule_id');
             $table->json('seats_booked'); //json
             $table->string('source');

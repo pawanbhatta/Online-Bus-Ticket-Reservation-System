@@ -53,19 +53,19 @@
                         Booked
                     @endif
                 </td>
-                <td>
+                <td> 
                     <div class="row">
                         <div class="col-md-2">
-                            <form action="{{ $epay_url }}" method="POST">
+                            <form action="https://uat.esewa.com.np/epay/main" method="POST">
                                 <input value="{{ $booking->total_price }}" name="tAmt" type="hidden">
                                 <input value="{{ $booking->total_price }}" name="amt" type="hidden">
                                 <input value="0" name="txAmt" type="hidden">
                                 <input value="0" name="psc" type="hidden">
                                 <input value="0" name="pdc" type="hidden">
-                                <input value="{{ $merchantCode }}" name="scd" type="hidden">
-                                <input value="{{ $pid }}" name="pid" type="hidden">
-                                <input value="{{ $successUrl.'/$booking->booking_id?q=su' }}" type="hidden" name="su">
-                                <input value="{{ $failedUrl.'/$booking->booking_id?q=fu' }}" type="hidden" name="fu">
+                                <input value="epay_payment" name="scd" type="hidden">
+                                <input value="Pawanbhai12223" name="pid" type="hidden">
+                                <input value="{{ 'http://localhost:8000/home/booking/success'.'/$booking->booking_id?q=su' }}" type="hidden" name="su">
+                                <input value="{{ 'http://localhost:8000/home/booking/failed'.'/$booking->booking_id?q=fu' }}" type="hidden" name="fu">
                                 <button type="submit" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-usd"></i></button>
                             </form>
                         </div>

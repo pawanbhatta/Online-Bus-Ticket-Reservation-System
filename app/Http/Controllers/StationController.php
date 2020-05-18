@@ -20,7 +20,7 @@ class StationController extends Controller
     {
         $this->middleware('auth:admin');
     }
-    
+
     public function index()
     {
         $stations = DB::table('stations')->paginate(10);
@@ -55,9 +55,9 @@ class StationController extends Controller
 
         $station->name = $request->name;
         // $station->schedule_id = $request->schedule_id;
-        if(isset($request->status)){
+        if (isset($request->status)) {
             $station->status = 1;
-        }else{
+        } else {
             $station->status = 0;
         }
 
@@ -107,9 +107,9 @@ class StationController extends Controller
 
         $station->name = $request->name;
         // $station->schedule_id = $request->schedule_id;
-        if(isset($request->status)){
+        if (isset($request->status)) {
             $station->status = 1;
-        }else{
+        } else {
             $station->status = 0;
         }
 

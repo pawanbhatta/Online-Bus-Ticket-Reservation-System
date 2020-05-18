@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Bus;
+use App\Station;
+use App\Booking;
 
 class BusSchedule extends Model
 {
@@ -18,12 +20,12 @@ class BusSchedule extends Model
 
     public function stations()
     {
-        return $this->hasMany(App\Station::class);
+        return $this->hasMany(Station::class);
     }
     
     public function bookings()
     {
-        return $this->belongsTo(App\Booking::class);
+        return $this->belongsTo(Booking::class);
     }
 
     protected $casts = [

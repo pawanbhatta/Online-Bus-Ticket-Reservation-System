@@ -43,7 +43,7 @@ class HomeController extends Controller
         $schedules = DB::table('bus_schedules')
             ->whereJsonContains('stations', $source)
             ->Where('depart_date', '=', $date)
-            // ->Where('pickup_address', 'like', '%'.$source.'%')
+            // ->orWhere('source', 'like', '%' . Input::get('source') . '%')
             ->whereJsonContains('stations', $dest)
             ->paginate(10);
 

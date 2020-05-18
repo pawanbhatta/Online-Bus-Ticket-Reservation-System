@@ -151,7 +151,11 @@
                                       <?php
                                         for ($i=1; $i<=12 ; $i++) { ?>
                                         <div class="col-md-3">
-                                              <input type="checkbox"  name="seats_booked[]" value="{{ $i }}" <?php if(in_array("$i", (array)$seats)){echo "checked"; ?> disabled="true" <?php } ?>>{{ $i }}
+                                              <input type="checkbox"  name="seats_booked[]" value="{{ $i }}" <?php 
+                                                if(in_array("$i", (array)$seats)){echo "checked"; ?>
+                                                 disabled="true" 
+                                                 <?php }  ?>
+                                                 >{{ $i }}
                                         </div>
                                       <?php } ?>
                                   </div>
@@ -168,13 +172,13 @@
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label for="source">From</label>
-                                  <input type="text" name="source" class="form-control" placeholder="Enter Source Address" required>
+                                  <input type="text" name="source" value="{{ $schedule->pickup_address }}" class="form-control" placeholder="Enter Source Address" required>
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label for="source">To</label>
-                                  <input type="text" name="destination"  class="form-control" placeholder="Enter Destination Address" required>
+                                  <input type="text" name="destination" value="{{ $schedule->dropoff_address }}"  class="form-control" placeholder="Enter Destination Address" required>
                                 </div>
                               </div>
                             </div>
@@ -195,7 +199,7 @@
                   <div class="card">
                     <div class="card-header"><h3>Edit Ticket Info</h3></div>
                     <div class="card-body">
-                        <form action="{{ url('/home/booking/'.$booking->booking_id) }}" method="post" enctype="multipart/form-data">
+                        <form action="{{ url('/home/booking/'.$booking->booking_id).'/update' }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                               <div class="col-md-6">
@@ -219,17 +223,28 @@
                                       <?php
                                         for ($i=1; $i<=12 ; $i++) { ?>
                                         <div class="col-md-3">
-                                              <input type="checkbox"  name="seats_booked[]" value="{{ $i }}" <?php if(in_array("$i", (array)$seats)){echo "checked"; ?> disabled="true" <?php } ?>>{{ $i }}
+                                              <input type="checkbox"  name="seats_booked[]" value="{{ $i }}" <?php
+                                                 if(in_array("$i", (array)$bus->seats)){echo "checked"; ?> 
+                                                 disabled="true"
+                                                  <?php } if(in_array("$i", (array)$booking->seats_booked)){echo "checked"; } ?>
+                                                  >{{ $i }}
                                         </div>
                                       <?php } ?>
                                   </div>
                                 </div>
                               </div>
                               <div class="col-md-6">
-                                <div class="form-group">
-                                  <label for="bus_id">Total Cost</label>
-                                  <input readonly name="total_price" value="{{ $booking->total_price }}" type="text" class="form-control" placeholder="Enter Bus Name" required>
+                                <div class="row">
+                                  <div class="form-group">
+                                    <label for="bus_id">Cost Per Seat</label>
+                                    <input readonly name="price" value="{{ $schedule->price }}" type="text" class="form-control" required>
+                                  </div> &nbsp; &nbsp;
+                                  <div class="form-group">
+                                    <label for="bus_id">Total</label>
+                                    <input readonly name="total_price" value="{{ $booking->total_price }}" type="text" class="form-control" placeholder="Enter Bus Name" required>
+                                  </div>
                                 </div>
+                                
                               </div>
                             </div>
                             <div class="row">

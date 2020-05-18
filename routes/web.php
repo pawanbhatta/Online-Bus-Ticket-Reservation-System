@@ -31,7 +31,7 @@ Route::prefix('home')->group(function(){
     Route::get('/booking/{schedule_id}', 'BookingController@create')->name('ticket.booking');
     Route::post('/booking/{schedule_id}', 'BookingController@store')->name('ticket.booking.submit');
     Route::get('/booking/{booking_id}/edit', 'BookingController@edit')->name('booking.edit');
-    Route::post('/booking/{booking_id}', 'BookingController@update')->name('booking.update');
+    Route::post('/booking/{booking_id}/update', 'BookingController@update')->name('booking.update');
     Route::get('/booking/{booking_id}/delete', 'BookingController@destroy')->name('booking.delete');
 
 
